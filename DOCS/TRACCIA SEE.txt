@@ -1,0 +1,10 @@
+TRACCIA SEE
+
+Il progetto e un prototipo funzionante dell’applicazione web. Sono richiesti:
+	- l’analisi dei requisiti del sistema informativo; 
+	- la progettazione concettuale del database attraverso il modello E-R;
+	- lo schema logico relazionale derivante e la definizione dei vincoli; 
+	- alcuni diagrammi UML significanti;
+	- la progettazione grafica delle pagine web;
+	- l’individuazione delle principali interrogazioni necessarie;
+	- la codifica delle pagine più significative dell’applicazione in Javascript e PHP.
