@@ -74,7 +74,7 @@ L'analisi dello schema E-R ha portato alla definizione dello schema logico del d
 
 ### Tabelle
 
-Elettore(**#<ins>id_elettore</ins>**,tipo, codice_scheda_elettorale, codice_carta_identita, codice_patente, **\*id_seggio**)
+Elettore(**#<ins>id_elettore</ins>**,tipo, codice_scheda_elettorale, codice_lista, codice_carta_identita, codice_patente, password, **\*id_seggio**)
 
 Seggio(**#<ins>id_seggio</ins>**, indirizzo)
 
