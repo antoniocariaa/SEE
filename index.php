@@ -24,7 +24,7 @@
         <form action="login.php" method="post">
             <div class="mb-4">
                 <input type="text" name="codice_tessera" id="codice_tessera" class="mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
-                <label for="codice_tessera" class="block italic text-sm font-medium text-gray-700">Codice Tessera Elettorale</label>
+                <label for="codice_tessera" class="block italic text-sm font-medium text-gray-700">Tessera Elettorale</label>
             </div>
             <div class="mb-4">
                 <select name="tipo_documento" id="tipo_documento" class="mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
@@ -35,7 +35,11 @@
             </div>
             <div class="mb-4">
                 <input type="text" name="codice_documento" id="codice_documento" class="mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
-                <label for="codice_documento" class="block text-sm font-medium italic text-gray-700">Codice Documento</label>
+                <label for="codice_documento" class="block text-sm font-medium italic text-gray-700">Documento</label>
+            </div>
+            <div class="mb-4">
+                <input type="password" name="codice_tessera" id="codice_tessera" class="mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
+                <label for="codice_tessera" class="block italic text-sm font-medium text-gray-700">Password</label>
             </div>
             <div class="flex mx-auto justify-center">
                 <div class="mb-4 w-auto pl-10 pr-10">

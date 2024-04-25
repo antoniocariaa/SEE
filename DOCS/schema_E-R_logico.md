@@ -19,6 +19,7 @@ L'analisi dei requisiti ha portato alla definizione di un modello E-R che rappre
         - codice_scheda_elettorale: int
         - codice_carta_identita: string
         - codice_patente: string
+        - password: string
         - id_seggio: int
         - tipo: string
     - Relazioni:
@@ -74,7 +75,7 @@ L'analisi dello schema E-R ha portato alla definizione dello schema logico del d
 
 ### Tabelle
 
-Elettore(**#<ins>id_elettore</ins>**,tipo, codice_scheda_elettorale, codice_lista, codice_carta_identita, codice_patente, password, **\*id_seggio**)
+Elettore(**#<ins>id_elettore</ins>**,tipo, codice_tessera_elettorale, codice_carta_identita, codice_patente, password, **\*id_seggio**)
 
 Seggio(**#<ins>id_seggio</ins>**, indirizzo)
 
