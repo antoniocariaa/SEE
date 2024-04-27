@@ -6,6 +6,18 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Scheda Elettorale Elettronica - Repubblica Italiana</title>
 </head>
+
+<?php
+
+    session_start();
+    echo $_SESSION["id"];
+    if(isset($_SESSION["id"])){
+        header("Location: vota.php");
+    }
+
+?>
+
+
 <!-- bg-rose-100 -->
 <body class="bg-orange-100 h-full">
     <div class="container mx-auto">
@@ -27,23 +39,36 @@
                 <label for="codice_tessera" class="block italic text-sm font-medium text-gray-700">Tessera Elettorale</label>
             </div>
             <div class="mb-4">
-                <input type="password" name="codice_tessera" id="codice_tessera" class="mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
-                <label for="codice_tessera" class="block italic text-sm font-medium text-gray-700">Password</label>
+                <input type="password" name="password" id="password" class="mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
+                <label for="password" class="block italic text-sm font-medium text-gray-700">Password</label>
             </div>
             <div class="mb-4">
-                <input type="text" name="codice_documento" id="codice_documento" class="mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm">
-                <label for="codice_documento" class="block text-sm font-medium italic text-gray-700">Patente</label>
+                <input type="text" name="codice_patente" id="codice_patente" class="mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm">
+                <label for="codice_patente" class="block text-sm font-medium italic text-gray-700">Patente</label>
             </div>
             <div class="mb-4">
-                <input type="text" name="codice_documento" id="codice_documento" class="mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
-                <label for="codice_documento" class="block text-sm font-medium italic text-gray-700">Carta Identità</label>
+                <input type="text" name="codice_identita" id="codice_identita" class="mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
+                <label for="codice_identita" class="block text-sm font-medium italic text-gray-700">Carta Identità</label>
             </div>
             <div class="mb-4">
-                <select name="tipo_documento" id="tipo_documento" class="mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
-                    <option class="rounded-none hover:text-orange-200" value="carta_identita">TODO</option>
-                    <option class="rounded-none" value="patente">TODO</option>
+                <select name="seggio" id="seggio" class="mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
+                    <option class="rounded-none hover:text-orange-200" value="">Seleziona il tuo seggio</option>
+                    <?php
+                        include "connection.php";
+                        $sql = "SELECT * FROM seggio";
+
+                        $result = $conn->query($sql);
+
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                                echo "<option class='rounded-none' value='".$row["id_seggio"]."'>".$row["indirizzo"]."</option>";
+                            }
+                        } else {
+                            echo "<option class='rounded-none' value=''>Nessun Seggio presente</option>";
+                        }
+                    ?>
                 </select>
-                <label for="tipo_documento" class="block text-sm italic font-medium text-gray-700">Seggio</label>
+                <label for="seggio" class="block text-sm italic font-medium text-gray-700">Seggio</label>
             </div>
             <div class="flex mx-auto justify-center">
                 <div class="mb-4 w-auto pl-10 pr-10">
