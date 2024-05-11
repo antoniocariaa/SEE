@@ -31,6 +31,7 @@
 
         <?php
             if(isset($_GET["error"])){
+                echo "<div class='text-center text-red-500 font-bold'>".$_GET["error"]."</div>";
                 echo "<div class='text-center text-red-500 font-bold'>Credenziali errate</div>";
             }
         ?>

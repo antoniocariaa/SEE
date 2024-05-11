@@ -21,6 +21,7 @@ L'analisi dei requisiti ha portato alla definizione di un modello E-R che rappre
         - codice_patente: string
         - password: string
         - id_seggio: int
+        - salt: string
         - tipo: string
     - Relazioni:
         - Membro di: **Seggio** (1, N)
@@ -52,6 +53,7 @@ L'analisi dei requisiti ha portato alla definizione di un modello E-R che rappre
     - Attributi:
         - sigla: string (PK)
         - nome: string
+        - simbolo: string
     - Relazioni:
         - Comprende: **SEE** (1, N)
         - Candida: **Candidato** (N, 1)
@@ -75,13 +77,13 @@ L'analisi dello schema E-R ha portato alla definizione dello schema logico del d
 
 ### Tabelle
 
-Elettore(**#<ins>id_elettore</ins>**,tipo, codice_tessera_elettorale, codice_carta_identita, codice_patente, password, **\*id_seggio**)
+Elettore(**#<ins>id_elettore</ins>**,tipo, codice_tessera_elettorale, codice_carta_identita, codice_patente, password, salt, **\*id_seggio**)
 
 Seggio(**#<ins>id_seggio</ins>**, indirizzo)
 
 SEE(**#<ins>id_see</ins>**, pin, data_voto, conteggiato, **\*id_elettore**, **\*id_partito**, **\*preferenza_1**, **\*preferenza_2**)
 
-Partito(**#<ins>sigla</ins>**, nome)
+Partito(**#<ins>sigla</ins>**, nome, simbolo)
 
 Candidato(**#<ins>id_candidato</ins>**, nome, cognome, sesso, data_nascita, **\*id_partito**)
 
