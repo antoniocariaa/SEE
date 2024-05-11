@@ -203,8 +203,7 @@ if ($result->num_rows > 0) {
                 success: function (data) {
                     console.log(data);
                     if (data == "ok") {
-                        alert("Voto effettuato con successo");
-                        location.href = "../";
+                        location.href = "vota.php";
                     } else {
                         alert("Errore durante il voto");
                     }

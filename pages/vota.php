@@ -59,7 +59,9 @@
     <div class="container mx-auto p-5 mt-20 w-5/6 md:w-4/6 lg:w-3/6 mb-5 text-center border border-black">
     <?php
         if($_SESSION["pin"] == -1){
-            echo "<p class=\"font-bold text-4xl\">Hai già compilato la scheda elettorale per questa votazione</p>";
+            echo "<p class=\"font-bold text-2xl\">Hai già compilato la scheda elettorale per questa votazione</p>";
+            echo "<p class=\"text-md pt-3 font-serif\">Non è possibile votare più di una volta</p>";
+            echo "<a href=\"spoglio.php\" class=\"block w-1/3 mx-auto bg-orange-100 border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4 mt-5\">Spoglio</a>";
         } else {
             echo "<p class=\" text-4xl\">Il tuo pin è: <span class=\"font-bold\" id=\"pinspan\">*******</span></p>";
             echo "<p class=\"text-md pt-3 font-serif\">Trascina il cursore per mostrare</p>";
