@@ -80,7 +80,7 @@ if ($result->num_rows > 0) {
                         echo '<div class="flex flex-col sm:flex-row border-black border-t my-3 mx-2">';
                     }
                     echo '<div class="flex-1 mt-3 place-items-center">';
-                    echo '<img class="place-self-center" src="data:image/png;base64,' . $row["simbolo"] . '" alt="' . $row["sigla"] . '">';
+                    echo '<img class="place-self-center" src="' . $row["simbolo"] . '" alt="' . $row["sigla"] . '">';
                     echo '</div>';
                     echo '<div class="flex-1 flex flex-col justify-center">';
                     echo '<h3 class="text-2xl font-bold">' . $row["sigla"] . '</h3>';
