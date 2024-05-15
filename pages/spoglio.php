@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/2/2b/Emblem_of_Italy_%28black_and_white_without_striped_background%29.svg" sizes="any" type="image/svg+xml">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous">
@@ -15,8 +16,10 @@
 <body class="bg-orange-100 h-full">
     <div class="container mx-auto h-1/6">
         <div class="mx-auto mb-2 mt-10 w-24">
+            <a href="logout.php">
             <img src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Emblem_of_Italy_%28black_and_white_without_striped_background%29.svg"
                 alt="Emblem of Italy (black and white without striped background).svg" class="w-full h-auto">
+            </a>
         </div>
         <header class="text-center w-11/12 mx-auto">
             <h1 class="text-4xl font-bold font-serif">Repubblica Italiana</h1>
@@ -51,12 +54,38 @@
 
     ?>
 
-<div class="container mx-auto p-5 mt-20 w-6/6 md:w-5/6 lg:w-4/6 mb-5 text-center border border-black">
+    <div class="container mx-auto p-5 mt-20 w-6/6 md:w-5/6 lg:w-4/6 mb-5 text-center border border-black">
         <h1 class="text-2xl font-bold">Risultati</h1>
         <div class="w-11/12 flex flex-col mx-auto">
             <canvas id="Risultati" ></canvas>
-            <canvas id="OrarioAffluenza" ></canvas>
+            
         </div>
+    </div>
+    <div class="container mx-auto p-5 mt-10 w-6/6 md:w-5/6 lg:w-4/6 mb-5 text-center border border-black">
+        <h1 class="text-2xl font-bold">Affluenza ai seggi</h1>
+        <div class="w-11/12 flex flex-col mx-auto">
+            <canvas id="OrarioAffluenza" ></canvas>  
+        </div>
+    </div>
+    <div class="container mx-auto p-5 mt-10 w-6/6 md:w-5/6 lg:w-4/6 mb-5 text-center border border-black">
+        <h1 class="text-2xl font-bold">Voti per Candidato</h1>
+        <div class="w-11/12 flex flex-col mx-auto">
+            <canvas id="Voti per candidato" ></canvas>  
+        </div>
+    </div>
+    <div class="container mx-auto p-5 mt-10 w-6/6 md:w-5/6 lg:w-4/6 mb-5 text-center border border-black">
+        <h1 class="text-2xl font-bold">Statistiche per votanti</h1>
+        <div class="w-11/12 flex flex-col mx-auto">
+            <canvas id="Voti per candidato" ></canvas>  
+        </div>
+        <!-- TODO 
+        
+            EDIT PK ELETTORE to tessera elettorale
+            EDIT ELETTORE per data/nascita, sesso
+            ADD new statistiche
+            ADD grafica sfondo (antifrode?)
+        -->
+
     </div>
 </body>
 <script>
@@ -75,7 +104,10 @@
                         'rgba(255, 206, 86, 0.2)',
                         'rgba(75, 192, 192, 0.2)',
                         'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 22, 164, 0.2)',
+                        'rgba(44, 19, 75, 0.2)',
+                        'rgba(122, 86, 64, 0.2)' 
                     ],
                     borderColor: [
                         'rgba(255, 99, 132, 1)',
@@ -83,7 +115,10 @@
                         'rgba(255, 206, 86, 1)',
                         'rgba(75, 192, 192, 1)',
                         'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 22, 164, 1)',
+                        'rgba(44, 19, 75, 1)',
+                        'rgba(122, 86, 64, 1)'
                     ],
                     borderWidth: 1
                 }]
