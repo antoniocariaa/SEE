@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Mag 11, 2024 alle 14:19
--- Versione del server: 10.4.32-MariaDB
--- Versione PHP: 8.2.12
+-- Creato il: Mag 15, 2024 alle 11:11
+-- Versione del server: 10.4.25-MariaDB
+-- Versione PHP: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `candidato` (
   `id_partito` char(10) NOT NULL,
   PRIMARY KEY (`id_candidato`),
   KEY `id_partito` (`id_partito`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dump dei dati per la tabella `candidato`
@@ -81,14 +81,27 @@ CREATE TABLE IF NOT EXISTS `elettore` (
   `id_seggio` int(11) NOT NULL,
   PRIMARY KEY (`id_elettore`),
   KEY `id_seggio` (`id_seggio`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dump dei dati per la tabella `elettore`
 --
 
 INSERT INTO `elettore` (`id_elettore`, `tipo`, `codice_tessera_elettorale`, `codice_carta_identita`, `codice_patente`, `password`, `salt`, `id_seggio`) VALUES
-(3, 'u', 'CA1234', 'CA1234', 'CA1234', '8bMUywD/9R4yU', '8b1ca0cb2d', 1);
+(3, 'u', 'CA1234', 'CA1234', 'CA1234', '8bMUywD/9R4yU', '8b1ca0cb2d', 1),
+(4, 'u', 'CB1234', 'CB1234', 'CB1234', '39klNxNFvk2KA', '399de1d606', 4),
+(5, 'u', 'CC1234', 'CC1234', 'CC1234', '166E.ZqfinEAs', '160cfbf99a', 4),
+(6, 'u', 'CD1234', 'CD1234', 'CD1234', 'e3nwcdp3HUyF2', 'e34e056e2d', 3),
+(7, 'u', 'CE1234', 'CE1234', 'CE1234', 'd01oeFqrYo.zw', 'd0fcbeecd0', 5),
+(8, 'u', 'CF1234', 'CF1234', 'CF1234', 'a5TJalvpcehMA', 'a50eef8b83', 1),
+(9, 'u', 'CG1234', 'CG1234', 'CG1234', 'fbKDs5lPpZHwo', 'fb9e6bfc6d', 2),
+(10, 'u', 'CH1234', 'CH1234', 'CH1234', 'b3ZSKsmwiSlWk', 'b38e23ece7', 3),
+(11, 'u', 'CI1234', 'CI1234', 'CI1234', '8e/kBEruwSS76', '8ecc42fc70', 4),
+(12, 'u', 'CJ1234', 'CJ1234', 'CJ1234', '80z4RqNcDxSSY', '800ee0ca7b', 1),
+(13, 'u', 'CK1234', 'CK1234', 'CK1234', '96VOeKuz7Gm1M', '96c5258379', 2),
+(14, 'u', 'CL1234', 'CL1234', 'CL1234', 'c03X6Mfl5piOU', 'c0c15c9845', 3),
+(15, 'u', 'CM1234', 'CM1234', 'CM1234', '09WLLcaTfutqQ', '093ced24ab', 3),
+(16, 'u', 'CN1234', 'CN1234', 'CN1234', 'af7evQwLgkLys', 'af064012d4', 2);
 
 -- --------------------------------------------------------
 
@@ -101,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `partito` (
   `nome` char(100) NOT NULL,
   `simbolo` text NOT NULL,
   PRIMARY KEY (`sigla`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dump dei dati per la tabella `partito`
@@ -129,7 +142,7 @@ INSERT INTO `partito` (`sigla`, `nome`, `simbolo`) VALUES
 CREATE TABLE IF NOT EXISTS `see` (
   `id_see` int(11) NOT NULL AUTO_INCREMENT,
   `pin` char(255) NOT NULL,
-  `data_voto` date DEFAULT NULL,
+  `data_voto` time DEFAULT NULL,
   `conteggiato` tinyint(1) DEFAULT NULL,
   `id_elettore` int(11) NOT NULL,
   `id_partito` char(10) DEFAULT NULL,
@@ -140,14 +153,27 @@ CREATE TABLE IF NOT EXISTS `see` (
   KEY `id_partito` (`id_partito`),
   KEY `preferenza_1` (`preferenza_1`),
   KEY `preferenza_2` (`preferenza_2`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dump dei dati per la tabella `see`
 --
 
 INSERT INTO `see` (`id_see`, `pin`, `data_voto`, `conteggiato`, `id_elettore`, `id_partito`, `preferenza_1`, `preferenza_2`) VALUES
-(4, '66365', NULL, NULL, 3, NULL, NULL, NULL);
+(5, '67646', '13:22:00', 1, 3, 'FDI', 1, NULL),
+(6, '41919', '22:00:00', 1, 4, 'FI', NULL, NULL),
+(7, '65805', '10:55:02', 1, 5, '+E', 18, 17),
+(8, '81893', '10:55:31', 1, 6, 'IV', 10, NULL),
+(9, '95457', '10:56:22', 1, 7, 'FDI', 2, NULL),
+(10, '36330', '10:57:02', 1, 8, 'LSP', NULL, NULL),
+(11, '45455', '10:57:40', 1, 9, 'IV', 9, NULL),
+(12, '73029', '10:58:19', 1, 10, 'AVS', 3, NULL),
+(13, '54542', '10:59:54', 1, 11, 'AZ', 5, NULL),
+(14, '19865', '11:00:44', 1, 12, 'PD', 15, NULL),
+(15, '42307', '11:04:18', 1, 13, 'M5S', NULL, NULL),
+(16, '78486', '11:05:00', 1, 14, 'LSP', 12, NULL),
+(17, '49828', '11:05:37', 1, 15, 'PD', NULL, NULL),
+(18, '93164', '11:08:52', 1, 16, 'FDI', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -159,7 +185,7 @@ CREATE TABLE IF NOT EXISTS `seggio` (
   `id_seggio` int(11) NOT NULL AUTO_INCREMENT,
   `indirizzo` char(50) DEFAULT NULL,
   PRIMARY KEY (`id_seggio`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dump dei dati per la tabella `seggio`
