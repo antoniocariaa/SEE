@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Mag 15, 2024 alle 11:11
--- Versione del server: 10.4.25-MariaDB
--- Versione PHP: 8.1.10
+-- Creato il: Mag 16, 2024 alle 12:05
+-- Versione del server: 10.1.37-MariaDB
+-- Versione PHP: 5.6.40
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -29,6 +30,7 @@ USE `votazioni`;
 -- Struttura della tabella `candidato`
 --
 
+DROP TABLE IF EXISTS `candidato`;
 CREATE TABLE IF NOT EXISTS `candidato` (
   `id_candidato` int(11) NOT NULL AUTO_INCREMENT,
   `nome` char(50) NOT NULL,
@@ -70,38 +72,42 @@ INSERT INTO `candidato` (`id_candidato`, `nome`, `cognome`, `sesso`, `data_nasci
 -- Struttura della tabella `elettore`
 --
 
+DROP TABLE IF EXISTS `elettore`;
 CREATE TABLE IF NOT EXISTS `elettore` (
-  `id_elettore` int(11) NOT NULL AUTO_INCREMENT,
-  `tipo` char(1) DEFAULT 'u',
   `codice_tessera_elettorale` char(20) NOT NULL,
+  `tipo` char(1) DEFAULT 'u',
   `codice_carta_identita` char(20) NOT NULL,
   `codice_patente` char(20) NOT NULL,
+  `data_nascita` date NOT NULL,
+  `sesso` char(1) NOT NULL,
   `password` char(255) NOT NULL,
   `salt` char(10) NOT NULL,
   `id_seggio` int(11) NOT NULL,
-  PRIMARY KEY (`id_elettore`),
+  PRIMARY KEY (`codice_tessera_elettorale`),
   KEY `id_seggio` (`id_seggio`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dump dei dati per la tabella `elettore`
 --
 
-INSERT INTO `elettore` (`id_elettore`, `tipo`, `codice_tessera_elettorale`, `codice_carta_identita`, `codice_patente`, `password`, `salt`, `id_seggio`) VALUES
-(3, 'u', 'CA1234', 'CA1234', 'CA1234', '8bMUywD/9R4yU', '8b1ca0cb2d', 1),
-(4, 'u', 'CB1234', 'CB1234', 'CB1234', '39klNxNFvk2KA', '399de1d606', 4),
-(5, 'u', 'CC1234', 'CC1234', 'CC1234', '166E.ZqfinEAs', '160cfbf99a', 4),
-(6, 'u', 'CD1234', 'CD1234', 'CD1234', 'e3nwcdp3HUyF2', 'e34e056e2d', 3),
-(7, 'u', 'CE1234', 'CE1234', 'CE1234', 'd01oeFqrYo.zw', 'd0fcbeecd0', 5),
-(8, 'u', 'CF1234', 'CF1234', 'CF1234', 'a5TJalvpcehMA', 'a50eef8b83', 1),
-(9, 'u', 'CG1234', 'CG1234', 'CG1234', 'fbKDs5lPpZHwo', 'fb9e6bfc6d', 2),
-(10, 'u', 'CH1234', 'CH1234', 'CH1234', 'b3ZSKsmwiSlWk', 'b38e23ece7', 3),
-(11, 'u', 'CI1234', 'CI1234', 'CI1234', '8e/kBEruwSS76', '8ecc42fc70', 4),
-(12, 'u', 'CJ1234', 'CJ1234', 'CJ1234', '80z4RqNcDxSSY', '800ee0ca7b', 1),
-(13, 'u', 'CK1234', 'CK1234', 'CK1234', '96VOeKuz7Gm1M', '96c5258379', 2),
-(14, 'u', 'CL1234', 'CL1234', 'CL1234', 'c03X6Mfl5piOU', 'c0c15c9845', 3),
-(15, 'u', 'CM1234', 'CM1234', 'CM1234', '09WLLcaTfutqQ', '093ced24ab', 3),
-(16, 'u', 'CN1234', 'CN1234', 'CN1234', 'af7evQwLgkLys', 'af064012d4', 2);
+INSERT INTO `elettore` (`codice_tessera_elettorale`, `tipo`, `codice_carta_identita`, `codice_patente`, `data_nascita`, `sesso`, `password`, `salt`, `id_seggio`) VALUES
+('CA1234', 'u', 'CA1234', 'CA1234', '1961-12-15', 'F', '8bMUywD/9R4yU', '8b1ca0cb2d', 1),
+('CB1234', 'u', 'CB1234', 'CB1234', '1957-11-24', 'M', '39klNxNFvk2KA', '399de1d606', 4),
+('CC1234', 'u', 'CC1234', 'CC1234', '1950-06-19', 'F', '166E.ZqfinEAs', '160cfbf99a', 4),
+('CD1234', 'u', 'CD1234', 'CD1234', '1977-10-11', 'M', 'e3nwcdp3HUyF2', 'e34e056e2d', 3),
+('CE1234', 'u', 'CE1234', 'CE1234', '1969-07-27', 'F', 'd01oeFqrYo.zw', 'd0fcbeecd0', 5),
+('CF1234', 'u', 'CF1234', 'CF1234', '1963-10-31', 'F', 'a5TJalvpcehMA', 'a50eef8b83', 1),
+('CG1234', 'u', 'CG1234', 'CG1234', '1994-08-22', 'F', 'fbKDs5lPpZHwo', 'fb9e6bfc6d', 2),
+('CH1234', 'u', 'CH1234', 'CH1234', '1971-09-06', 'M', 'b3ZSKsmwiSlWk', 'b38e23ece7', 3),
+('CI1234', 'u', 'CI1234', 'CI1234', '1984-03-11', 'F', '8e/kBEruwSS76', '8ecc42fc70', 4),
+('CJ1234', 'u', 'CJ1234', 'CJ1234', '1966-07-07', 'F', '80z4RqNcDxSSY', '800ee0ca7b', 1),
+('CK1234', 'u', 'CK1234', 'CK1234', '1980-01-13', 'M', '96VOeKuz7Gm1M', '96c5258379', 2),
+('CL1234', 'u', 'CL1234', 'CL1234', '2000-01-13', 'M', 'c03X6Mfl5piOU', 'c0c15c9845', 3),
+('CM1234', 'u', 'CM1234', 'CM1234', '1994-04-24', 'F', '09WLLcaTfutqQ', '093ced24ab', 3),
+('CN1234', 'u', 'CN1234', 'CN1234', '1994-12-22', 'F', 'af7evQwLgkLys', 'af064012d4', 2),
+('CY1234', 'u', 'CY1234', 'CY1234', '2000-01-01', 'F', 'd4uHefuBZQW2I', 'd4fbe7dba3', 4),
+('CZ1234', 'u', 'CZ1234', 'CZ1234', '2024-05-01', 'M', '1eq0f123HFFf2', '1e80ffcff7', 1);
 
 -- --------------------------------------------------------
 
@@ -109,6 +115,7 @@ INSERT INTO `elettore` (`id_elettore`, `tipo`, `codice_tessera_elettorale`, `cod
 -- Struttura della tabella `partito`
 --
 
+DROP TABLE IF EXISTS `partito`;
 CREATE TABLE IF NOT EXISTS `partito` (
   `sigla` char(10) NOT NULL,
   `nome` char(100) NOT NULL,
@@ -139,12 +146,13 @@ INSERT INTO `partito` (`sigla`, `nome`, `simbolo`) VALUES
 -- Struttura della tabella `see`
 --
 
+DROP TABLE IF EXISTS `see`;
 CREATE TABLE IF NOT EXISTS `see` (
   `id_see` int(11) NOT NULL AUTO_INCREMENT,
   `pin` char(255) NOT NULL,
   `data_voto` time DEFAULT NULL,
   `conteggiato` tinyint(1) DEFAULT NULL,
-  `id_elettore` int(11) NOT NULL,
+  `id_elettore` char(20) NOT NULL,
   `id_partito` char(10) DEFAULT NULL,
   `preferenza_1` int(11) DEFAULT NULL,
   `preferenza_2` int(11) DEFAULT NULL,
@@ -153,27 +161,29 @@ CREATE TABLE IF NOT EXISTS `see` (
   KEY `id_partito` (`id_partito`),
   KEY `preferenza_1` (`preferenza_1`),
   KEY `preferenza_2` (`preferenza_2`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dump dei dati per la tabella `see`
 --
 
 INSERT INTO `see` (`id_see`, `pin`, `data_voto`, `conteggiato`, `id_elettore`, `id_partito`, `preferenza_1`, `preferenza_2`) VALUES
-(5, '67646', '13:22:00', 1, 3, 'FDI', 1, NULL),
-(6, '41919', '22:00:00', 1, 4, 'FI', NULL, NULL),
-(7, '65805', '10:55:02', 1, 5, '+E', 18, 17),
-(8, '81893', '10:55:31', 1, 6, 'IV', 10, NULL),
-(9, '95457', '10:56:22', 1, 7, 'FDI', 2, NULL),
-(10, '36330', '10:57:02', 1, 8, 'LSP', NULL, NULL),
-(11, '45455', '10:57:40', 1, 9, 'IV', 9, NULL),
-(12, '73029', '10:58:19', 1, 10, 'AVS', 3, NULL),
-(13, '54542', '10:59:54', 1, 11, 'AZ', 5, NULL),
-(14, '19865', '11:00:44', 1, 12, 'PD', 15, NULL),
-(15, '42307', '11:04:18', 1, 13, 'M5S', NULL, NULL),
-(16, '78486', '11:05:00', 1, 14, 'LSP', 12, NULL),
-(17, '49828', '11:05:37', 1, 15, 'PD', NULL, NULL),
-(18, '93164', '11:08:52', 1, 16, 'FDI', NULL, NULL);
+(5, '67646', '16:36:22', 1, 'CA1234', 'FDI', 1, NULL),
+(6, '41919', '11:05:04', 1, 'CB1234', 'FI', NULL, NULL),
+(7, '65805', '13:16:16', 1, 'CC1234', '+E', 18, 17),
+(8, '81893', '11:26:07', 1, 'CD1234', 'IV', 10, NULL),
+(9, '95457', '10:21:47', 1, 'CE1234', 'FDI', 2, NULL),
+(10, '36330', '10:30:36', 1, 'CF1234', 'LSP', NULL, NULL),
+(11, '45455', '14:27:37', 1, 'CG1234', 'IV', 9, NULL),
+(12, '73029', '19:06:21', 1, 'CH1234', 'AVS', 3, NULL),
+(13, '54542', '15:48:57', 1, 'CI1234', 'AZ', 5, NULL),
+(14, '19865', '14:45:42', 1, 'CJ1234', 'PD', 15, NULL),
+(15, '42307', '19:21:38', 1, 'CK1234', 'M5S', NULL, NULL),
+(16, '78486', '16:11:09', 1, 'CL1234', 'LSP', 12, NULL),
+(17, '49828', '15:50:51', 1, 'CM1234', 'PD', NULL, NULL),
+(18, '93164', '09:00:49', 1, 'CN1234', 'FDI', NULL, NULL),
+(27, '10219', '19:51:32', 1, 'CZ1234', 'FI', 7, 8),
+(31, '39544', '21:15:16', 1, 'CY1234', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -181,6 +191,7 @@ INSERT INTO `see` (`id_see`, `pin`, `data_voto`, `conteggiato`, `id_elettore`, `
 -- Struttura della tabella `seggio`
 --
 
+DROP TABLE IF EXISTS `seggio`;
 CREATE TABLE IF NOT EXISTS `seggio` (
   `id_seggio` int(11) NOT NULL AUTO_INCREMENT,
   `indirizzo` char(50) DEFAULT NULL,
@@ -218,7 +229,7 @@ ALTER TABLE `elettore`
 -- Limiti per la tabella `see`
 --
 ALTER TABLE `see`
-  ADD CONSTRAINT `see_ibfk_1` FOREIGN KEY (`id_elettore`) REFERENCES `elettore` (`id_elettore`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `see_ibfk_1` FOREIGN KEY (`id_elettore`) REFERENCES `elettore` (`codice_tessera_elettorale`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `see_ibfk_2` FOREIGN KEY (`id_partito`) REFERENCES `partito` (`sigla`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `see_ibfk_3` FOREIGN KEY (`preferenza_1`) REFERENCES `candidato` (`id_candidato`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `see_ibfk_4` FOREIGN KEY (`preferenza_2`) REFERENCES `candidato` (`id_candidato`) ON DELETE SET NULL ON UPDATE CASCADE;
