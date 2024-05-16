@@ -45,6 +45,12 @@
             crossorigin="anonymous">
     </script>
     <title>Scheda Elettorale Elettronica - Repubblica Italiana</title>
+    <style>
+        body {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10"><pattern id="diagonalLines" patternUnits="userSpaceOnUse" width="10" height="10" patternTransform="rotate(45)"><line x1="0" y="0" x2="10" y2="0" stroke="%23fed7aa" stroke-width="0.5" /></pattern><rect width="100%" height="100%" fill="url(%23diagonalLines)" /></svg>');
+            background-repeat: repeat;
+        }
+    </style>
 </head>
 <body class="bg-orange-100 h-full">
     <div class="container mx-auto">

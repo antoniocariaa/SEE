@@ -12,6 +12,12 @@
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scheda Elettorale Elettronica</title>
+    <style>
+        body {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10"><pattern id="diagonalLines" patternUnits="userSpaceOnUse" width="10" height="10" patternTransform="rotate(45)"><line x1="0" y="0" x2="10" y2="0" stroke="%23fed7aa" stroke-width="0.5" /></pattern><rect width="100%" height="100%" fill="url(%23diagonalLines)" /></svg>');
+            background-repeat: repeat;
+        }
+    </style>
 </head>
 <body class="bg-orange-100 h-full">
     <div class="container mx-auto h-1/6">
@@ -52,6 +58,58 @@
             array_push($dataOrario, $row["voti"]);
         }
 
+        $sql = "select count(*) as voti, nome, cognome, candidato.id_partito  from see, candidato where (see.preferenza_1 = candidato.id_candidato or see.preferenza_2 = candidato.id_candidato) AND  conteggiato = 1 group by nome, cognome";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $labelsCandidato = array();
+        $dataCandidato = array();
+        while($row = $result->fetch_assoc()){
+            array_push($labelsCandidato, $row["nome"]." ".$row["cognome"]." - ".$row["id_partito"]);
+            array_push($dataCandidato, $row["voti"]);
+        }
+
+        //seleziona i votanti per fascia d'età
+        $sql = "select count(*) as voti, year(data_nascita) as eta from elettore, see where elettore.codice_tessera_elettorale = see.id_elettore and conteggiato = 1 group by year(data_nascita)";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $labelsEta = array();
+        $dataEta = array();
+        while($row = $result->fetch_assoc()){
+            array_push($labelsEta, $row["eta"]);
+            array_push($dataEta, $row["voti"]);
+        }
+
+        //seleziona i votanti per sesso
+        $sql = "select count(*) as voti, sesso from elettore, see where elettore.codice_tessera_elettorale  = see.id_elettore and conteggiato = 1 group by sesso";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $labelsSesso = array();
+        $dataSesso = array();
+        while($row = $result->fetch_assoc()){
+            array_push($labelsSesso, $row["sesso"]);
+            array_push($dataSesso, $row["voti"]);
+        }
+        
+        //seleziona la percentuale di votanti
+        $sql = "select count(*) as voti, conteggiato from see group by conteggiato";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $labelsPercVotanti = array();
+        $dataPercVotanti = array();
+        while($row = $result->fetch_assoc()){
+            if($row["conteggiato"] == 0){
+                array_push($labelsPercVotanti, "Non votanti");
+                array_push($dataPercVotanti, $row["voti"]);
+            }else{
+                array_push($labelsPercVotanti, "Votanti");
+                array_push($dataPercVotanti, $row["voti"]);
+            }
+        }
+
     ?>
 
     <div class="container mx-auto p-5 mt-20 w-6/6 md:w-5/6 lg:w-4/6 mb-5 text-center border border-black">
@@ -70,25 +128,38 @@
     <div class="container mx-auto p-5 mt-10 w-6/6 md:w-5/6 lg:w-4/6 mb-5 text-center border border-black">
         <h1 class="text-2xl font-bold">Voti per Candidato</h1>
         <div class="w-11/12 flex flex-col mx-auto">
-            <canvas id="Voti per candidato" ></canvas>  
+            <canvas id="Votipercandidato" ></canvas>  
         </div>
     </div>
     <div class="container mx-auto p-5 mt-10 w-6/6 md:w-5/6 lg:w-4/6 mb-5 text-center border border-black">
-        <h1 class="text-2xl font-bold">Statistiche per votanti</h1>
+        <h1 class="text-2xl font-bold">Votanti per anno di nascita</h1>
         <div class="w-11/12 flex flex-col mx-auto">
-            <canvas id="Voti per candidato" ></canvas>  
+            <canvas id="VotantiPerEta" ></canvas>  
         </div>
-        <!-- TODO 
+        
+    </div>
+    <div class="container mx-auto p-5 mt-10 w-6/6 md:w-5/6 lg:w-4/6 mb-5 text-center border border-black">
+        <h1 class="text-2xl font-bold">Votanti per sesso</h1>
+        <div class="w-11/12 flex flex-col mx-auto">
+            <canvas id="VotantiPerSesso" ></canvas>  
+        </div>
+    </div>
+    <div class="container mx-auto p-5 mt-10 w-6/6 md:w-5/6 lg:w-4/6 mb-5 text-center border border-black">
+        <h1 class="text-2xl font-bold">Percentuale di Votanti</h1>
+        <div class="w-11/12 flex flex-col mx-auto">
+            <canvas id="PercentualeDiVotanti" ></canvas>  
+        </div>
+    </div>
+
+    <!-- TODO 
             EDIT SEGGIO FOR MAP VOTI
             ADD new statistiche
             ADD grafica sfondo (antifrode?)
 
-            set SEE anonima con fk NULL
             EDIT elettore con FLAG VOTO
             SPOGLIO AL TERMINE
         -->
 
-    </div>
 </body>
 <script>
     $(document).ready(function(){
@@ -163,6 +234,14 @@
                     display: true,
                     text: 'Affluenza per ora'
                 },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            min: 0
+                        }
+                    }]
+                },
                 tooltips: {
                     enabled: true,
                     mode: 'single',
@@ -176,6 +255,153 @@
                 }
             }
         });
+
+        var ctx = document.getElementById('Votipercandidato').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: <?php echo json_encode($labelsCandidato); ?>,
+                datasets: [{
+                    label: 'Candidato',
+                    data: <?php echo json_encode($dataCandidato); ?>,
+                    backgroundColor: 'rgba(249, 115, 22, 0.2)', 
+                    borderColor: 'rgba(249, 115, 22, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Voti per candidato'
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            min: 0
+                        }
+                    }]
+                },
+                tooltips: {
+                    enabled: true,
+                    mode: 'single',
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var label = data.labels[tooltipItem.index];
+                            var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                            return label + ': '+value;
+                        }
+                    }
+                }
+            }
+        });
+
+        var ctx = document.getElementById('VotantiPerEta').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: <?php echo json_encode($labelsEta); ?>,
+                datasets: [{
+                    label: 'Età',
+                    data: <?php echo json_encode($dataEta); ?>,
+                    backgroundColor: 'rgba(249, 115, 22, 0.2)', 
+                    borderColor: 'rgba(249, 115, 22, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Votanti per anno di Nascita'
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            min: 0
+                        }
+                    }]
+                },
+                tooltips: {
+                    enabled: true,
+                    mode: 'single',
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var label = data.labels[tooltipItem.index];
+                            var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                            return label + ': '+value;
+                        }
+                    }
+                }
+            }
+        });
+
+        var ctx = document.getElementById('VotantiPerSesso').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: <?php echo json_encode($labelsSesso); ?>,
+                datasets: [{
+                    label: 'Sesso',
+                    data: <?php echo json_encode($dataSesso); ?>,
+                    backgroundColor: ['rgba(249, 115, 22, 0.2)', 'rgba(255, 189, 125, 0.2)'], 
+                    borderColor: ['rgba(249, 115, 22, 1)', 'rgba(255, 189, 125, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Votanti per sesso'
+                },
+                tooltips: {
+                    enabled: true,
+                    mode: 'single',
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var label = data.labels[tooltipItem.index];
+                            var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                            var percent = Math.round((value / data.datasets[tooltipItem.datasetIndex].data.reduce((a, b) => a + b, 0)) * 100);
+                            return label + ': '+value + ' - ' + percent + '%';
+                        }
+                    }
+                }
+            }
+        });
+
+        var ctx = document.getElementById('PercentualeDiVotanti').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: <?php echo json_encode($labelsPercVotanti); ?>,
+                datasets: [{
+                    label: 'Votanti',
+                    data: <?php echo json_encode($dataPercVotanti); ?>,
+                    backgroundColor: ['rgba(249, 115, 22, 0.2)', 'rgba(255, 189, 125, 0.2)'], 
+                    borderColor: ['rgba(249, 115, 22, 1)', 'rgba(255, 189, 125, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Percentuale di votanti'
+                },
+                tooltips: {
+                    enabled: true,
+                    mode: 'single',
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var label = data.labels[tooltipItem.index];
+                            var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                            var percent = Math.round((value / data.datasets[tooltipItem.datasetIndex].data.reduce((a, b) => a + b, 0)) * 100);
+                            return label + ': '+value + ' - ' + percent + '%';
+                        }
+                    }
+                }
+            }
+        });
+
     });
 
 </script>
