@@ -9,7 +9,7 @@
     $sql = "select id_see, conteggiato, pin from see where id_elettore = ?";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $_SESSION["id"]);
+    $stmt->bind_param("s", $_SESSION["codice_tessera_elettorale"]);
     $stmt->execute();
 
     $result = $stmt->get_result();
@@ -25,7 +25,7 @@
         $sql = "insert into see (id_elettore, pin) values (?, ?)";
         $stmt = $conn->prepare($sql);
         $pin = rand(10000, 99999);
-        $stmt->bind_param("ii", $_SESSION["id"], $pin);
+        $stmt->bind_param("si", $_SESSION["codice_tessera_elettorale"], $pin);
         $stmt->execute();
         $_SESSION["pin"] = $pin;
     }

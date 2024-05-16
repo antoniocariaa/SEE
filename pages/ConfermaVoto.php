@@ -9,7 +9,7 @@
     $sql = "select id_see, conteggiato, pin from see where id_elettore = ?";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $_SESSION["id"]);
+    $stmt->bind_param("s", $_SESSION["codice_tessera_elettorale"]);
     $stmt->execute();
 
     $result = $stmt->get_result();
@@ -22,17 +22,6 @@
             $_SESSION["pin"] = -1;
             header("Location: vota.php");
         }else{
-            // $sql = "update see set conteggiato = 1, data_voto = curtime()".
-            //         (!empty($_POST["partito"])) ? ', id_partito = ?' : ''.
-            //         (!empty($_POST["candidato1"])) ? ', preferenza_1 = ?' : ''.
-            //         (!empty($_POST["candidato2"])) ? ', preferenza_2 = ?' : ''.
-            //         " where pin ='". $_SESSION["pin"]."';";
-            // $stmt = $conn->prepare($sql);
-            // . (!empty($_POST["partito"])) ? ', id_partito = ?' : ''
-            // . (!empty($_POST["candidato1"])) ? ', preferenza_1 = ?' : ''
-            // . (!empty($_POST["candidato2"])) ? ', preferenza_2 = ?' : ''
-
-            // $stmt->bind_param("sii", $_POST["partito"], $_POST["candidato1"], $_POST["candidato2"]);
 
             $conn->query("START TRANSACTION");
 

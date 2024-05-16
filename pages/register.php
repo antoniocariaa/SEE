@@ -51,6 +51,18 @@
                 <label for="codice_identita" class="block text-sm font-medium italic text-gray-700">Carta Identità</label>
             </div>
             <div class="mb-4">
+                <input type="date" name="data_nascita" id="data_nascita" class="mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
+                <label for="data_nascita" class="block text-sm font-medium italic text-gray-700">Data di Nascita</label>
+            </div>
+            <div class="mb-4">
+                <select name="sesso" id="sesso" class="mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
+                    <option class="rounded-none hover:text-orange-200" value="">Inserisci il sesso</option>
+                    <option class="rounded-none hover:text-orange-200" value="F">Femmina</option>
+                    <option class="rounded-none hover:text-orange-200" value="M">Maschio</option>
+                </select>
+                <label for="sesso" class="block text-sm italic font-medium text-gray-700">Sesso</label>
+            </div>
+            <div class="mb-4">
                 <select name="seggio" id="seggio" class="mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
                     <option class="rounded-none hover:text-orange-200" value="">Seleziona il tuo seggio</option>
                     <?php

@@ -79,11 +79,13 @@
             <canvas id="Voti per candidato" ></canvas>  
         </div>
         <!-- TODO 
-        
-            EDIT PK ELETTORE to tessera elettorale
-            EDIT ELETTORE per data/nascita, sesso
+            EDIT SEGGIO FOR MAP VOTI
             ADD new statistiche
             ADD grafica sfondo (antifrode?)
+
+            set SEE anonima con fk NULL
+            EDIT elettore con FLAG VOTO
+            SPOGLIO AL TERMINE
         -->
 
     </div>

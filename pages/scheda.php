@@ -11,7 +11,7 @@ if (!isset($_SESSION["id"])) {
 
 $sql = "select id_see, conteggiato, pin from see where id_elettore = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $_SESSION["id"]);
+$stmt->bind_param("s", $_SESSION["codice_tessera_elettorale"]);
 $stmt->execute();
 
 $result = $stmt->get_result();

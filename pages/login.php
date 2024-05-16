@@ -27,7 +27,7 @@
     if(isset($tipo_documento)){
         login();
     } else {
-        $sql = "insert into elettore (codice_tessera_elettorale, codice_carta_identita, codice_patente, password, salt, id_seggio) values (?, ?, ?, ?, ?, ?)";
+        $sql = "insert into elettore (codice_tessera_elettorale, codice_carta_identita, codice_patente,data_nascita, sesso, password, salt, id_seggio) values (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
 
         // gereazione del salt per la password
@@ -36,11 +36,13 @@
         $bind_codice_tessera = $codice_tessera;
         $bind_codice_identita = $codice_identita;
         $bind_codice_patente = $codice_patente;
+        $bind_data_nascita = $_POST["data_nascita"];
+        $bind_sesso = $_POST["sesso"];
         $bind_password = crypt($password, $salt);
         $bind_salt = $salt;
         $bind_seggio = $seggio;
 
-        $stmt->bind_param("sssssi", $bind_codice_tessera, $bind_codice_identita, $bind_codice_patente, $bind_password, $bind_salt, $bind_seggio);
+        $stmt->bind_param("sssssssi", $bind_codice_tessera, $bind_codice_identita, $bind_codice_patente,$bind_data_nascita, $bind_sesso, $bind_password, $bind_salt, $bind_seggio);
 
         $stmt->execute();
 
@@ -54,7 +56,7 @@
     //funzione di login
 
     function login(){
-
+        
         global $conn, $codice_tessera, $password, $codice_documento, $tipo_documento;
 
         if($tipo_documento == "carta_identita"){
@@ -79,14 +81,16 @@
             echo $row["password"] . " = " . crypt($password, $row["salt"]) . "<br>";
 
             if($row["password"] == crypt($password, $row["salt"])){
-                $_SESSION["id"] = $row["id_elettore"];
+                $_SESSION["id"] = rand(10000, 99999);
                 $_SESSION["codice_tessera_elettorale"] = $row["codice_tessera_elettorale"];
                 header("Location: ../pages/vota.php");
             } else {
+                session_unset();
                 session_destroy();
                 header("Location: ../?error=".$row["password"] . " = " . crypt($password, $row["salt"]));
             }
         } else {
+            session_unset();
             session_destroy();
             header("Location: ../?error=1");
         }
