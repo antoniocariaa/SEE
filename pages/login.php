@@ -27,13 +27,27 @@
     if(isset($tipo_documento)){
         login();
     } else {
+
+        //controlla se il codice tessera elettorale è già stato usato
+        $sql = "select * from elettore where codice_tessera_elettorale = ?";
+        $bind_codice_tessera = $codice_tessera;
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $codice_tessera);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if($result->num_rows > 0){
+            session_unset();
+            session_destroy();
+            header("Location: ../?error=2");
+        }
+
         $sql = "insert into elettore (codice_tessera_elettorale, codice_carta_identita, codice_patente,data_nascita, sesso, password, salt, id_seggio) values (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
 
         // gereazione del salt per la password
         $salt = strval(md5(uniqid(rand(), true)));
         $salt = substr($salt, 0, 10);
-        $bind_codice_tessera = $codice_tessera;
         $bind_codice_identita = $codice_identita;
         $bind_codice_patente = $codice_patente;
         $bind_data_nascita = $_POST["data_nascita"];
