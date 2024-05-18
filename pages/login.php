@@ -97,6 +97,7 @@
             if($row["password"] == crypt($password, $row["salt"])){
                 $_SESSION["id"] = rand(10000, 99999);
                 $_SESSION["codice_tessera_elettorale"] = $row["codice_tessera_elettorale"];
+                $_SESSION["tipo"] = $row["tipo"];
                 header("Location: ../pages/vota.php");
             } else {
                 session_unset();

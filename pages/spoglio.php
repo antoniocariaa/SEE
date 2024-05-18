@@ -45,6 +45,13 @@
             array_push($dataRisultati, $row["voti"]);
         }
 
+        $sql = "select count(*) as voti from see where conteggiato = 1 and id_partito is null";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        array_push($labelsRisultati, "Schede Bianche");
+        array_push($dataRisultati, $result->fetch_assoc()["voti"]);
+
 
 
         $sql = "select count(*) as voti, hour(data_voto) as ora from see where conteggiato = 1 group by hour(data_voto)";
@@ -69,7 +76,7 @@
             array_push($dataCandidato, $row["voti"]);
         }
 
-        //seleziona i votanti per fascia d'età
+        //seleziona i votanti per fascia d'età calcola l'eta da data di nascita
         $sql = "select count(*) as voti, year(data_nascita) as eta from elettore, see where elettore.codice_tessera_elettorale = see.id_elettore and conteggiato = 1 group by year(data_nascita)";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
