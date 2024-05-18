@@ -87,6 +87,11 @@
         }
     ?>
     </div>
+    <?php
+        if($_SESSION["tipo"] == "a"){
+            echo "<a href=\"admin.php\" class=\"block w-1 w-6/12 md:w-4/12 lg:w-2/12 mx-auto text-center bg-orange-100 border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4 mt-5\">Amministrazione</a>";
+        }
+    ?>
 
     <script>
 
