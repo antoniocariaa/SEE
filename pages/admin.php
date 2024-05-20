@@ -16,6 +16,9 @@
     // Query to select all "partito"
     $partiti_query = "SELECT * FROM partito";
     $partiti_result = mysqli_query($conn, $partiti_query);
+
+    $candidati_query = "SELECT * FROM candidato ";
+    $candidati_result = mysqli_query($conn, $candidati_query);
 ?>
 <head>
     <meta charset="UTF-8">
@@ -68,8 +71,8 @@
                                 </div>
                             </form> 
                         </div>
-                        <div class="w-2/3 p-4 h-full scrollable-div max-h-64 overflow-y-auto">
-                            <!-- Empty div for spacing -->
+                        <div class="w-2/3 p-4 h-full scrollable-div max-h-96 overflow-y-auto">
+                            
                             <?php while($row = mysqli_fetch_assoc($result)): ?>
                             <div class="flex flex-row p-4 justify-between border border-black mt-4">
                                 <form action="modifica_seggio.php" method="post" class="w-full flex items-center">
@@ -85,7 +88,7 @@
                     </div>
                 </div>
             </div>
-            <div class="w-2/3 px-3">
+            <div class="w-2/3 pl-3">
                 <h3 class="text-2xl font-bold text-center">Gestione Partiti</h3>
                 <div class="flex flex-col mt-3">
                     <div class="flex flex-row p-4 justify-center border border-black">
@@ -115,7 +118,6 @@
                             </form>
                         </div>
                         <div class="w-4/6 p-4 h-full scrollable-div max-h-96 overflow-y-auto">
-                            <!-- Empty div for spacing -->
                             <?php while($row = mysqli_fetch_assoc($partiti_result)): ?>
                             <div class="flex flex-row p-4 justify-between border border-black mt-4">
                                 <form action="modifica_partito.php" method="post" class="w-full flex items-center" enctype="multipart/form-data">
@@ -139,6 +141,81 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            
+        </div>
+        <div class="flex flex-row pt-4 pb-8">
+            <div class="w-full">
+                <h3 class="text-2xl font-bold text-center">Gestione Candidati</h3>
+                <div class="flex flex-col mt-3">
+                    <div class="flex flex-row p-4 justify-center border border-black">
+                        <div class="w-2/6 p-4 justify-center">
+                            <form action="aggiungi_partito.php" method="post" enctype="multipart/form-data">
+                                <div class="mb-4">
+                                    <input type="text" name="nome" id="nome" class="mb-1 block
+                                    w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
+                                    focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
+                                    <label for="sigla" class="block italic text-sm font-medium text-gray-700">Nome</label>
+                                </div>
+                                <div class="mb-4">
+                                    <input type="text" name="cognome" id="cognome" class="mb-1 block
+                                    w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
+                                    focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
+                                    <label for="nome" class="block italic text-sm font-medium text-gray-700">cognome</label>
+                                </div>
+                                <div class="mb-4">
+                                    <input type="date" name="simbolo" id="simbolo" class="mb-1 block
+                                    w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
+                                    focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
+                                    <label for="simbolo" class="block italic text-sm font-medium text-gray-700">Data di nascita</label>
+                                </div>
+                                <div class="mb-4">
+                                    <select name="sesso" id="sesso" class="mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
+                                        <option class="rounded-none hover:text-orange-200" value="">Inserisci il sesso</option>
+                                        <option class="rounded-none hover:text-orange-200" value="F">Femmina</option>
+                                        <option class="rounded-none hover:text-orange-200" value="M">Maschio</option>
+                                    </select>
+                                    <label for="sesso" class="block text-sm italic font-medium text-gray-700">Sesso</label>
+                                </div>
+
+                                <!-- SELECT option con partiti -->
+
+                                <div class="flex mx-auto justify-center pt-4 w-1/3">
+                                    <button type="submit" class="w-full bg-orange-100 border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4">✔️</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="w-4/6 p-4 h-full scrollable-div max-h-96 overflow-y-auto">
+                            <?php while($row = mysqli_fetch_assoc($candidati_result)): ?>
+
+
+                            <!-- SELECT option con partiti  e mostra i candidati per partito-->
+
+
+                            <div class="flex flex-row p-4 justify-between border border-black mt-4">
+                                <form action="modifica_partito.php" method="post" class="w-full flex items-center" enctype="multipart/form-data">
+                                    <input type="text" name="sigla" id="sigla_<?php echo $row['nome']; ?>" class="mb-1 block
+                                    w-1/6 px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
+                                    focus:ring-orange-300 focus:border-orange-300 mr-1 sm:text-sm" value="<?php echo $row['nome']; ?>" required>
+                                    <input type="text" name="nome" id="nome_<?php echo $row['cognome']; ?>" class="mb-1 block
+                                    w-3/6 px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
+                                    focus:ring-orange-300 focus:border-orange-300 sm:text-sm" value="<?php echo $row['cognome']; ?>" required>
+                                    <input type="date" name="simbolo" id="simbolo_<?php echo $row['data_nascita']; ?>" class="mb-1 block
+                                    w-1/6 px-3 py-2 bg-orange-100 rounded-none focus:outline-none
+                                    focus:ring-orange-300 focus:border-orange-300 sm:text-sm" value="<?php echo $row['data_nascita']; ?>">
+                                    <button type="submit" class="ml-4 bg-orange-100 border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4">🖊️</button>
+                                </form>
+                                <form action="elimina_partito.php" method="post">
+                                    <input type="hidden" name="sigla" value="<?php echo $row['sigla']; ?>">
+                                    <button type="submit" class="ml-4 bg-red-100 border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4">X</button>
+                                </form>
+                            </div>
+                            <?php endwhile; ?>
+                        </div>
+                        </div>
+                    </div>
+                </div>   
+                    
             </div>
         </div>
     </div>
