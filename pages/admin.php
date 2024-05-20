@@ -51,6 +51,11 @@
             <h2 class="text-2xl font-bold">Scheda Elettorale Elettronica</h2>
         </header>
     </div>
+    <?php
+        if(isset($_GET["error"])){
+            echo "<div class='text-center text-red-500 font-bold'>Errore durante la modifica</div>";
+        }
+    ?>
     
     <div class="container mx-auto pt-10 h-6/6 w-6/6 justify-center">
         <div class="flex flex-row">
@@ -146,11 +151,23 @@
         </div>
         <div class="flex flex-row pt-4 pb-8">
             <div class="w-full">
+                <?php
+                
+                
+                $partiti2_result = mysqli_query($conn, $partiti_query);
+                $testo = "<select name='partito' id='partito' class='mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm' required>";   
+                $testo = $testo . "<option class='rounded-none hover:text-orange-200' value=''>Inserisci il partito</option>";          
+                while($row = mysqli_fetch_assoc($partiti2_result)){
+                    $testo = $testo . "<option class='rounded-none hover:text-orange-200' value='" . $row['sigla'] . "'>" . $row['nome'] . "</option>";
+                }
+                $testo = $testo . "</select>";
+                
+                ?>
                 <h3 class="text-2xl font-bold text-center">Gestione Candidati</h3>
                 <div class="flex flex-col mt-3">
                     <div class="flex flex-row p-4 justify-center border border-black">
-                        <div class="w-2/6 p-4 justify-center">
-                            <form action="aggiungi_partito.php" method="post" enctype="multipart/form-data">
+                        <div class="w-2/6 p-4 justify-center max-height-96">
+                            <form action="aggiungi_candidato.php" method="post" enctype="multipart/form-data">
                                 <div class="mb-4">
                                     <input type="text" name="nome" id="nome" class="mb-1 block
                                     w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
@@ -161,21 +178,25 @@
                                     <input type="text" name="cognome" id="cognome" class="mb-1 block
                                     w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
                                     focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
-                                    <label for="nome" class="block italic text-sm font-medium text-gray-700">cognome</label>
+                                    <label for="nome" class="block italic text-sm font-medium text-gray-700">Cognome</label>
                                 </div>
                                 <div class="mb-4">
-                                    <input type="date" name="simbolo" id="simbolo" class="mb-1 block
+                                    <input type="date" name="data_nascita" id="data_nascita" class="mb-1 block
                                     w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
                                     focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
-                                    <label for="simbolo" class="block italic text-sm font-medium text-gray-700">Data di nascita</label>
+                                    <label for="data_nascita" class="block italic text-sm font-medium text-gray-700">Data di nascita</label>
                                 </div>
                                 <div class="mb-4">
-                                    <select name="sesso" id="sesso" class="mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
+                                    <select name="sesso" id="sesso" class="mb-1 block w-full px-3 mr-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
                                         <option class="rounded-none hover:text-orange-200" value="">Inserisci il sesso</option>
                                         <option class="rounded-none hover:text-orange-200" value="F">Femmina</option>
                                         <option class="rounded-none hover:text-orange-200" value="M">Maschio</option>
                                     </select>
                                     <label for="sesso" class="block text-sm italic font-medium text-gray-700">Sesso</label>
+                                </div>
+                                <div class="mb-4">
+                                    <?php echo $testo; ?>
+                                    <label for="partito" class="block text-sm italic font-medium text-gray-700">Partito</label>
                                 </div>
 
                                 <!-- SELECT option con partiti -->
@@ -185,7 +206,7 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="w-4/6 p-4 h-full scrollable-div max-h-96 overflow-y-auto">
+                        <div class="w-4/6 p-4 h-full scrollable-div max-h-[30rem] overflow-y-auto">
                             <?php while($row = mysqli_fetch_assoc($candidati_result)): ?>
 
 
@@ -193,20 +214,46 @@
 
 
                             <div class="flex flex-row p-4 justify-between border border-black mt-4">
-                                <form action="modifica_partito.php" method="post" class="w-full flex items-center" enctype="multipart/form-data">
+                                <form action="modifica_candidato.php" method="post" class="w-full flex items-center">
                                     <input type="text" name="sigla" id="sigla_<?php echo $row['nome']; ?>" class="mb-1 block
                                     w-1/6 px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
                                     focus:ring-orange-300 focus:border-orange-300 mr-1 sm:text-sm" value="<?php echo $row['nome']; ?>" required>
                                     <input type="text" name="nome" id="nome_<?php echo $row['cognome']; ?>" class="mb-1 block
-                                    w-3/6 px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
+                                    w-1/6 px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
                                     focus:ring-orange-300 focus:border-orange-300 sm:text-sm" value="<?php echo $row['cognome']; ?>" required>
                                     <input type="date" name="simbolo" id="simbolo_<?php echo $row['data_nascita']; ?>" class="mb-1 block
-                                    w-1/6 px-3 py-2 bg-orange-100 rounded-none focus:outline-none
+                                    w-2/6 px-3 py-2 bg-orange-100 rounded-none focus:outline-none
                                     focus:ring-orange-300 focus:border-orange-300 sm:text-sm" value="<?php echo $row['data_nascita']; ?>">
+                                    <select name="sesso" id="sesso" class="mb-1 block w-3/6 px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
+                                        <option class="rounded-none hover:text-orange-200" value="">Inserisci il sesso</option>
+                                        <?php
+                                        if($row['sesso'] == "F"){
+                                            echo "<option class='rounded-none hover:text-orange-200' value='F' selected>Femmina</option>";
+                                            echo "<option class='rounded-none hover:text-orange-200' value='M'>Maschio</option>";
+                                        }else{
+                                            echo "<option class='rounded-none hover:text-orange-200' value='F'>Femmina</option>";
+                                            echo "<option class='rounded-none hover:text-orange-200' value='M' selected>Maschio</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                    <select name="partito" id="partito" class="mb-1 block w-3/6 px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
+                                        <option class="rounded-none hover:text-orange-200" value="">Inserisci il partito</option>
+                                        <?php
+                                        $partiti2_result = mysqli_query($conn, $partiti_query);
+                                        while($row2 = mysqli_fetch_assoc($partiti2_result)){
+                                            if($row2['sigla'] == $row['id_partito']){
+                                                echo "<option class='rounded-none hover:text-orange-200' value='" . $row2['sigla'] . "' selected>" . $row2['nome'] . "</option>";
+                                            }else{
+                                                echo "<option class='rounded-none hover:text-orange-200' value='" . $row2['sigla'] . "'>" . $row2['nome'] . "</option>";
+                                            }
+                                        }
+                                        ?>
+                                    </select>
+                                    
                                     <button type="submit" class="ml-4 bg-orange-100 border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4">🖊️</button>
                                 </form>
-                                <form action="elimina_partito.php" method="post">
-                                    <input type="hidden" name="sigla" value="<?php echo $row['sigla']; ?>">
+                                <form action="elimina_candidato.php" method="post">
+                                    <input type="hidden" name="id_candidato" value="<?php echo $row['id_candidato']; ?>">
                                     <button type="submit" class="ml-4 bg-red-100 border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4">X</button>
                                 </form>
                             </div>
