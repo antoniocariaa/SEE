@@ -6,7 +6,7 @@
         header("Location: ../");
     }
 
-    $sql = "select id_see, conteggiato, pin from see where id_elettore = ?";
+    $sql = "select id_see, conteggiato, votato, pin from see, elettore where id_elettore = ?";
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $_SESSION["codice_tessera_elettorale"]);
@@ -18,16 +18,35 @@
         $row = $result->fetch_assoc();
         $_SESSION["pin"] = $row["pin"];
 
-        if($row["conteggiato"] == 1){
+        if($row["conteggiato"] == 1 && $row["votato"] == 1){
             $_SESSION["pin"] = -1;
         }
     }else{
-        $sql = "insert into see (id_elettore, pin) values (?, ?)";
+
+        $sql = "select votato from elettore where codice_tessera_elettorale = ?";
         $stmt = $conn->prepare($sql);
-        $pin = rand(10000, 99999);
-        $stmt->bind_param("si", $_SESSION["codice_tessera_elettorale"], $pin);
+        $stmt->bind_param("s", $_SESSION["codice_tessera_elettorale"]);
         $stmt->execute();
-        $_SESSION["pin"] = $pin;
+
+        $result = $stmt->get_result();
+
+        if($result->num_rows > 0){
+            $row = $result->fetch_assoc();
+            $votato = $row["votato"];
+
+            if($votato == 0){
+                $sql = "insert into see (id_elettore, pin) values (?, ?)";
+                $stmt = $conn->prepare($sql);
+                $pin = rand(10000, 99999);
+                $stmt->bind_param("si", $_SESSION["codice_tessera_elettorale"], $pin);
+                $stmt->execute();
+                $_SESSION["pin"] = $pin;
+            }else{
+                $_SESSION["pin"] = -1;
+            }    
+        }
+
+        
     }
 
 ?>

@@ -1,11 +1,6 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Creato il: Mag 20, 2024 alle 16:23
--- Versione del server: 10.4.32-MariaDB
--- Versione PHP: 8.2.12
+-- Creato il: Mag 11, 2024 alle 14:19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,6 +24,7 @@ USE `votazioni`;
 -- Struttura della tabella `candidato`
 --
 
+DROP TABLE IF EXISTS `candidato`;
 CREATE TABLE IF NOT EXISTS `candidato` (
   `id_candidato` int(11) NOT NULL AUTO_INCREMENT,
   `nome` char(50) NOT NULL,
@@ -70,6 +66,7 @@ INSERT INTO `candidato` (`id_candidato`, `nome`, `cognome`, `sesso`, `data_nasci
 -- Struttura della tabella `elettore`
 --
 
+DROP TABLE IF EXISTS `elettore`;
 CREATE TABLE IF NOT EXISTS `elettore` (
   `codice_tessera_elettorale` char(20) NOT NULL,
   `tipo` char(1) DEFAULT 'u',
@@ -77,6 +74,7 @@ CREATE TABLE IF NOT EXISTS `elettore` (
   `codice_patente` char(20) NOT NULL,
   `data_nascita` date NOT NULL,
   `sesso` char(1) NOT NULL,
+  `votato` int(1) NOT NULL DEFAULT 0,
   `password` char(255) NOT NULL,
   `salt` char(10) NOT NULL,
   `id_seggio` int(11) NOT NULL,
@@ -115,6 +113,7 @@ INSERT INTO `elettore` (`codice_tessera_elettorale`, `tipo`, `codice_carta_ident
 -- Struttura della tabella `partito`
 --
 
+DROP TABLE IF EXISTS `partito`;
 CREATE TABLE IF NOT EXISTS `partito` (
   `sigla` char(10) NOT NULL,
   `nome` char(100) NOT NULL,
@@ -145,6 +144,7 @@ INSERT INTO `partito` (`sigla`, `nome`, `simbolo`) VALUES
 -- Struttura della tabella `see`
 --
 
+DROP TABLE IF EXISTS `see`;
 CREATE TABLE IF NOT EXISTS `see` (
   `id_see` int(11) NOT NULL AUTO_INCREMENT,
   `pin` char(255) NOT NULL,
@@ -155,62 +155,61 @@ CREATE TABLE IF NOT EXISTS `see` (
   `preferenza_1` int(11) DEFAULT NULL,
   `preferenza_2` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_see`),
-  KEY `id_elettore` (`id_elettore`),
   KEY `id_partito` (`id_partito`),
   KEY `preferenza_1` (`preferenza_1`),
   KEY `preferenza_2` (`preferenza_2`)
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dump dei dati per la tabella `see`
 --
 
 INSERT INTO `see` (`id_see`, `pin`, `data_voto`, `conteggiato`, `id_elettore`, `id_partito`, `preferenza_1`, `preferenza_2`) VALUES
-(5, '67646', '16:36:22', 1, 'CA1234', 'FDI', 1, NULL),
-(6, '41919', '11:05:04', 1, 'CB1234', 'FI', NULL, NULL),
-(7, '65805', '13:16:16', 1, 'CC1234', '+E', 18, 17),
-(8, '81893', '11:26:07', 1, 'CD1234', 'IV', 10, NULL),
-(9, '95457', '10:21:47', 1, 'CE1234', 'FDI', 2, NULL),
-(10, '36330', '10:30:36', 1, 'CF1234', 'LSP', NULL, NULL),
-(11, '45455', '14:27:37', 1, 'CG1234', 'IV', 9, NULL),
-(12, '73029', '19:06:21', 1, 'CH1234', 'AVS', 3, NULL),
-(13, '54542', '15:48:57', 1, 'CI1234', 'AZ', 5, NULL),
-(14, '19865', '14:45:42', 1, 'CJ1234', 'PD', 15, NULL),
-(15, '42307', '19:21:38', 1, 'CK1234', 'M5S', NULL, NULL),
-(16, '78486', '16:11:09', 1, 'CL1234', 'LSP', 12, NULL),
-(17, '49828', '15:50:51', 1, 'CM1234', 'PD', NULL, NULL),
-(18, '93164', '09:00:49', 1, 'CN1234', 'FDI', NULL, NULL),
-(27, '10219', '19:51:32', 1, 'CZ1234', 'FI', 7, 8),
-(31, '39544', '21:15:16', 1, 'CY1234', NULL, NULL, NULL),
-(32, '52868', '16:48:38', 1, 'AX1234', 'FDI', 1, NULL),
+(5, '67646', '16:36:22', 1, '', 'FDI', 1, NULL),
+(6, '41919', '11:05:04', 1, '', 'FI', NULL, NULL),
+(7, '65805', '13:16:16', 1, '', '+E', 18, 17),
+(8, '81893', '11:26:07', 1, '', 'IV', 10, NULL),
+(9, '95457', '10:21:47', 1, '', 'FDI', 2, NULL),
+(10, '36330', '10:30:36', 1, '', 'LSP', NULL, NULL),
+(11, '45455', '14:27:37', 1, '', 'IV', 9, NULL),
+(12, '73029', '19:06:21', 1, '', 'AVS', 3, NULL),
+(13, '54542', '15:48:57', 1, '', 'AZ', 5, NULL),
+(14, '19865', '14:45:42', 1, '', 'PD', 15, NULL),
+(15, '42307', '19:21:38', 1, '', 'M5S', NULL, NULL),
+(16, '78486', '16:11:09', 1, '', 'LSP', 12, NULL),
+(17, '49828', '15:50:51', 1, '', 'PD', NULL, NULL),
+(18, '93164', '09:00:49', 1, '', 'FDI', NULL, NULL),
+(27, '10219', '19:51:32', 1, '', 'FI', 7, 8),
+(31, '39544', '21:15:16', 1, '', NULL, NULL, NULL),
+(32, '52868', '16:48:38', 1, '', 'FDI', 1, NULL),
 (33, '58431', NULL, NULL, 'AB1234', NULL, NULL, NULL),
-(34, '42546', '17:29:42', 1, 'AC1234', 'M5S', 13, NULL),
-(35, '12345', '12:00:00', 1, 'DA1234', 'PD', 3, 5),
-(36, '23456', '13:15:45', 1, 'DB1234', 'FDI', 1, NULL),
+(34, '42546', '17:29:42', 1, '', 'M5S', 13, NULL),
+(35, '12345', '12:00:00', 1, '', 'PD', 3, 5),
+(36, '23456', '13:15:45', 1, '', 'FDI', 1, NULL),
 (37, '34567', '14:30:30', NULL, 'DC1234', NULL, NULL, NULL),
 (38, '45678', '15:45:15', NULL, 'DD1234', NULL, NULL, NULL),
-(39, '56789', '16:00:00', 1, 'DE1234', 'M5S', 4, 6),
-(40, '67890', '17:15:45', 1, 'DF1234', 'FI', 7, 8),
-(41, '78901', '18:30:30', 1, 'DG1234', 'IV', 9, NULL),
+(39, '56789', '16:00:00', 1, '', 'M5S', 4, 6),
+(40, '67890', '17:15:45', 1, '', 'FI', 7, 8),
+(41, '78901', '18:30:30', 1, '', 'IV', 9, NULL),
 (42, '89012', '19:45:15', NULL, 'DH1234', NULL, NULL, NULL),
-(43, '90123', '20:00:00', 1, 'DI1234', 'AZ', 10, 11),
-(44, '01234', '21:15:45', 1, 'DJ1234', 'LSP', NULL, NULL),
-(45, '13579', '22:30:30', 1, 'DK1234', '+E', 12, 13),
-(46, '24680', '23:45:15', 1, 'DL1234', 'AVS', 14, 15),
+(43, '90123', '20:00:00', 1, '', 'AZ', 10, 11),
+(44, '01234', '21:15:45', 1, '', 'LSP', NULL, NULL),
+(45, '13579', '22:30:30', 1, '', '+E', 12, 13),
+(46, '24680', '23:45:15', 1, '', 'AVS', 14, 15),
 (47, '36912', '00:00:00', NULL, 'DM1234', NULL, NULL, NULL),
-(48, '48123', '01:15:45', 1, 'DN1234', 'FDI', 16, 17),
-(49, '59234', '02:30:30', 1, 'DO1234', 'PD', 18, NULL),
-(50, '70345', '03:45:15', 1, 'DP1234', 'M5S', 1, 2),
-(51, '81456', '04:00:00', 1, 'DQ1234', 'FI', NULL, NULL),
-(52, '92567', '05:15:45', 1, 'DR1234', 'IV', 3, 4),
-(53, '03678', '06:30:30', 1, 'DS1234', 'AZ', 5, NULL),
+(48, '48123', '01:15:45', 1, '', 'FDI', 16, 17),
+(49, '59234', '02:30:30', 1, '', 'PD', 18, NULL),
+(50, '70345', '03:45:15', 1, '', 'M5S', 1, 2),
+(51, '81456', '04:00:00', 1, '', 'FI', NULL, NULL),
+(52, '92567', '05:15:45', 1, '', 'IV', 3, 4),
+(53, '03678', '06:30:30', 1, '', 'AZ', 5, NULL),
 (54, '14789', '07:45:15', NULL, 'DT1234', NULL, NULL, NULL),
-(55, '11223', '08:45:00', 1, 'DX1234', NULL, NULL, NULL),
-(56, '22334', '09:30:30', 1, 'DY1234', NULL, NULL, NULL),
-(57, '33445', '10:15:45', 1, 'DZ1234', NULL, NULL, NULL),
-(58, '44556', '11:00:00', 1, 'EA1234', NULL, NULL, NULL),
-(59, '55667', '11:45:15', 1, 'EB1234', NULL, NULL, NULL),
-(61, '17667', NULL, NULL, 'FZ1234', NULL, NULL, NULL);
+(55, '11223', '08:45:00', 1, '', NULL, NULL, NULL),
+(56, '22334', '09:30:30', 1, '', NULL, NULL, NULL),
+(57, '33445', '10:15:45', 1, '', NULL, NULL, NULL),
+(58, '44556', '11:00:00', 1, '', NULL, NULL, NULL),
+(59, '55667', '11:45:15', 1, '', NULL, NULL, NULL),
+(63, '49476', '19:09:22', 1, '', 'AZ', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -218,6 +217,7 @@ INSERT INTO `see` (`id_see`, `pin`, `data_voto`, `conteggiato`, `id_elettore`, `
 -- Struttura della tabella `seggio`
 --
 
+DROP TABLE IF EXISTS `seggio`;
 CREATE TABLE IF NOT EXISTS `seggio` (
   `id_seggio` int(11) NOT NULL AUTO_INCREMENT,
   `indirizzo` char(50) DEFAULT NULL,

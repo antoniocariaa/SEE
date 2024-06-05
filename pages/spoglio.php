@@ -77,7 +77,7 @@
         }
 
         //seleziona i votanti per fascia d'età calcola l'eta da data di nascita
-        $sql = "select count(*) as voti, year(data_nascita) as eta from elettore, see where elettore.codice_tessera_elettorale = see.id_elettore and conteggiato = 1 group by year(data_nascita)";
+        $sql = "select count(*) as voti, year(data_nascita) as eta from elettore where votato = 1 group by year(data_nascita)";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -89,7 +89,7 @@
         }
 
         //seleziona i votanti per sesso
-        $sql = "select count(*) as voti, sesso from elettore, see where elettore.codice_tessera_elettorale  = see.id_elettore and conteggiato = 1 group by sesso";
+        $sql = "select count(*) as voti, sesso from elettore where votato = 1 group by sesso";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();

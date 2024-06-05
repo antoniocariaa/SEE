@@ -27,7 +27,7 @@
 
 
 
-            $sql = "update see set conteggiato = 1, data_voto = curtime() where pin =?";
+            $sql = "update see,elettore set conteggiato = 1, votato = 1, see.id_elettore = '', data_voto = curtime() where pin =?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $_SESSION["pin"]);
             $stmt->execute();
