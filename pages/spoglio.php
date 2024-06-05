@@ -309,7 +309,7 @@
             data: {
                 labels: <?php echo json_encode($labelsEta); ?>,
                 datasets: [{
-                    label: 'Età',
+                    label: 'Anno di Nascita',
                     data: <?php echo json_encode($dataEta); ?>,
                     backgroundColor: 'rgba(249, 115, 22, 0.2)', 
                     borderColor: 'rgba(249, 115, 22, 1)',

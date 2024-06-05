@@ -215,13 +215,14 @@
 
                             <div class="flex flex-row p-4 justify-between border border-black mt-4">
                                 <form action="modifica_candidato.php" method="post" class="w-full flex items-center">
-                                    <input type="text" name="sigla" id="sigla_<?php echo $row['nome']; ?>" class="mb-1 block
+                                    <input hidden name="id_candidato" value="<?php echo $row['id_candidato']; ?>">
+                                    <input type="text" name="nome" id="<?php echo $row['nome']; ?>" class="mb-1 block
                                     w-1/6 px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
                                     focus:ring-orange-300 focus:border-orange-300 mr-1 sm:text-sm" value="<?php echo $row['nome']; ?>" required>
-                                    <input type="text" name="nome" id="nome_<?php echo $row['cognome']; ?>" class="mb-1 block
+                                    <input type="text" name="cognome" id="<?php echo $row['cognome']; ?>" class="mb-1 block
                                     w-1/6 px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
                                     focus:ring-orange-300 focus:border-orange-300 sm:text-sm" value="<?php echo $row['cognome']; ?>" required>
-                                    <input type="date" name="simbolo" id="simbolo_<?php echo $row['data_nascita']; ?>" class="mb-1 block
+                                    <input type="date" name="data_nascita" id="<?php echo $row['data_nascita']; ?>" class="mb-1 block
                                     w-2/6 px-3 py-2 bg-orange-100 rounded-none focus:outline-none
                                     focus:ring-orange-300 focus:border-orange-300 sm:text-sm" value="<?php echo $row['data_nascita']; ?>">
                                     <select name="sesso" id="sesso" class="mb-1 block w-3/6 px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
