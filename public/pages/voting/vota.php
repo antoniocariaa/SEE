@@ -1,9 +1,9 @@
 <?php    
 
-    include "connection.php";
+    include "../../../includes/connection.php";
 
     if(!isset($_SESSION["id"])){
-        header("Location: ../");
+        header("Location: ../../../public/index.php");
     }
 
     $sql = "select id_see, conteggiato, votato, pin from see, elettore where id_elettore = ?";
@@ -37,7 +37,7 @@
             if($votato == 0){
                 $sql = "insert into see (id_elettore, pin) values (?, ?)";
                 $stmt = $conn->prepare($sql);
-                $pin = rand(10000, 99999);
+                $pin = random_int(100000, 999999);
                 $stmt->bind_param("si", $_SESSION["codice_tessera_elettorale"], $pin);
                 $stmt->execute();
                 $_SESSION["pin"] = $pin;
@@ -114,7 +114,7 @@
 
     <script>
 
-        var pin = <?php echo $_SESSION["pin"]; ?>;
+        var pin = <?php echo htmlspecialchars($_SESSION["pin"], ENT_QUOTES, 'UTF-8'); ?>;
         $(document).ready(function(){
 
             //quando il mouse va in hover sul pin lo mostra altrimenti lo nasconde

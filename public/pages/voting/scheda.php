@@ -3,10 +3,10 @@
 
 <?php
 
-include "connection.php";
+include "../../../includes/connection.php";
 
 if (!isset($_SESSION["id"])) {
-    header("Location: ../");
+    header("Location: ../../../public/index.php");
 }
 
 $sql = "select id_see, conteggiato, pin from see where id_elettore = ?";

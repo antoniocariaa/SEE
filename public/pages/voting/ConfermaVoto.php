@@ -1,9 +1,9 @@
 <?php
 
-    include "connection.php";
+    include "../../../includes/connection.php";
 
     if(!isset($_SESSION["id"])){
-        header("Location: ../");
+        header("Location: ../../../public/index.php");
     }
 
     $sql = "select id_see, conteggiato, pin from see where id_elettore = ?";
@@ -56,7 +56,7 @@
     }else{
         $sql = "insert into see (id_elettore, pin) values (?, ?)";
         $stmt = $conn->prepare($sql);
-        $pin = rand(10000, 99999);
+        $pin = random_int(100000, 999999);
         $stmt->bind_param("ii", $_SESSION["id"], $pin);
         $stmt->execute();
         $_SESSION["pin"] = $pin;

@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-    include "connection.php";
-    if(!isset($_SESSION["id"])){
-        header("Location: ../");
-    }
-    if($_SESSION["tipo"] != "a"){
-        header("Location: ../");
+    include "../../../includes/connection.php";
+    if(!isset($_SESSION["id"]) || $_SESSION["tipo"] !== "a") {
+        header("Location: ../../../public/index.php");
+        exit;
     }
     
     // Query to select all "seggio"
@@ -65,6 +63,7 @@
                     <div class="flex flex-row p-4 justify-center border border-black">
                         <div class="w-1/3 p-4 justify-center">
                             <form action="aggiungi_seggio.php" method="post">
+<input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
                                 <div class="mb-4">
                                     <input type="text" name="indirizzo" id="indirizzo" class="mb-1 block
                                     w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
@@ -81,10 +80,11 @@
                             <?php while($row = mysqli_fetch_assoc($result)): ?>
                             <div class="flex flex-row p-4 justify-between border border-black mt-4">
                                 <form action="modifica_seggio.php" method="post" class="w-full flex items-center">
-                                    <input type="hidden" name="id_seggio" value="<?php echo $row['id_seggio']; ?>">
-                                    <input type="text" name="indirizzo" id="indirizzo_<?php echo $row['id_seggio']; ?>" class="mb-1 block
+<input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
+                                    <input type="hidden" name="id_seggio" value="<?php echo htmlspecialchars($row['id_seggio'], ENT_QUOTES, 'UTF-8'); ?>">
+                                    <input type="text" name="indirizzo" id="indirizzo_<?php echo htmlspecialchars($row['id_seggio'], ENT_QUOTES, 'UTF-8'); ?>" class="mb-1 block
                                     w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
-                                    focus:ring-orange-300 focus:border-orange-300 sm:text-sm" value="<?php echo $row['indirizzo']; ?>" required>
+                                    focus:ring-orange-300 focus:border-orange-300 sm:text-sm" value="<?php echo htmlspecialchars($row['indirizzo'], ENT_QUOTES, 'UTF-8'); ?>" required>
                                     <button type="submit" class="ml-4 bg-orange-100 border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4">🖊️</button>
                                 </form> 
                             </div>
@@ -99,6 +99,7 @@
                     <div class="flex flex-row p-4 justify-center border border-black">
                         <div class="w-2/6 p-4 justify-center">
                             <form action="aggiungi_partito.php" method="post" enctype="multipart/form-data">
+<input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
                                 <div class="mb-4">
                                     <input type="text" name="sigla" id="sigla" class="mb-1 block
                                     w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
@@ -126,19 +127,21 @@
                             <?php while($row = mysqli_fetch_assoc($partiti_result)): ?>
                             <div class="flex flex-row p-4 justify-between border border-black mt-4">
                                 <form action="modifica_partito.php" method="post" class="w-full flex items-center" enctype="multipart/form-data">
-                                    <input type="text" name="sigla" id="sigla_<?php echo $row['sigla']; ?>" class="mb-1 block
+<input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
+                                    <input type="text" name="sigla" id="sigla_<?php echo htmlspecialchars($row['sigla'], ENT_QUOTES, 'UTF-8'); ?>" class="mb-1 block
                                     w-1/6 px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
-                                    focus:ring-orange-300 focus:border-orange-300 mr-1 sm:text-sm" value="<?php echo $row['sigla']; ?>" required>
-                                    <input type="text" name="nome" id="nome_<?php echo $row['sigla']; ?>" class="mb-1 block
+                                    focus:ring-orange-300 focus:border-orange-300 mr-1 sm:text-sm" value="<?php echo htmlspecialchars($row['sigla'], ENT_QUOTES, 'UTF-8'); ?>" required>
+                                    <input type="text" name="nome" id="nome_<?php echo htmlspecialchars($row['sigla'], ENT_QUOTES, 'UTF-8'); ?>" class="mb-1 block
                                     w-3/6 px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
-                                    focus:ring-orange-300 focus:border-orange-300 sm:text-sm" value="<?php echo $row['nome']; ?>" required>
-                                    <input type="file" name="simbolo" id="simbolo_<?php echo $row['sigla']; ?>" class="mb-1 block
+                                    focus:ring-orange-300 focus:border-orange-300 sm:text-sm" value="<?php echo htmlspecialchars($row['nome'], ENT_QUOTES, 'UTF-8'); ?>" required>
+                                    <input type="file" name="simbolo" id="simbolo_<?php echo htmlspecialchars($row['sigla'], ENT_QUOTES, 'UTF-8'); ?>" class="mb-1 block
                                     w-1/6 px-3 py-2 bg-orange-100 rounded-none focus:outline-none
-                                    focus:ring-orange-300 focus:border-orange-300 sm:text-sm" value="<?php echo $row['simbolo']; ?>">
+                                    focus:ring-orange-300 focus:border-orange-300 sm:text-sm" value="<?php echo htmlspecialchars($row['simbolo'], ENT_QUOTES, 'UTF-8'); ?>">
                                     <button type="submit" class="ml-4 bg-orange-100 border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4">🖊️</button>
                                 </form>
                                 <form action="elimina_partito.php" method="post">
-                                    <input type="hidden" name="sigla" value="<?php echo $row['sigla']; ?>">
+<input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
+                                    <input type="hidden" name="sigla" value="<?php echo htmlspecialchars($row['sigla'], ENT_QUOTES, 'UTF-8'); ?>">
                                     <button type="submit" class="ml-4 bg-red-100 border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4">X</button>
                                 </form>
                             </div>
@@ -168,6 +171,7 @@
                     <div class="flex flex-row p-4 justify-center border border-black">
                         <div class="w-2/6 p-4 justify-center max-height-96">
                             <form action="aggiungi_candidato.php" method="post" enctype="multipart/form-data">
+<input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
                                 <div class="mb-4">
                                     <input type="text" name="nome" id="nome" class="mb-1 block
                                     w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
@@ -195,7 +199,7 @@
                                     <label for="sesso" class="block text-sm italic font-medium text-gray-700">Sesso</label>
                                 </div>
                                 <div class="mb-4">
-                                    <?php echo $testo; ?>
+                                    <?php echo htmlspecialchars($testo, ENT_QUOTES, 'UTF-8'); ?>
                                     <label for="partito" class="block text-sm italic font-medium text-gray-700">Partito</label>
                                 </div>
 
@@ -215,16 +219,17 @@
 
                             <div class="flex flex-row p-4 justify-between border border-black mt-4">
                                 <form action="modifica_candidato.php" method="post" class="w-full flex items-center">
-                                    <input hidden name="id_candidato" value="<?php echo $row['id_candidato']; ?>">
-                                    <input type="text" name="nome" id="<?php echo $row['nome']; ?>" class="mb-1 block
+<input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
+                                    <input hidden name="id_candidato" value="<?php echo htmlspecialchars($row['id_candidato'], ENT_QUOTES, 'UTF-8'); ?>">
+                                    <input type="text" name="nome" id="<?php echo htmlspecialchars($row['nome'], ENT_QUOTES, 'UTF-8'); ?>" class="mb-1 block
                                     w-1/6 px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
-                                    focus:ring-orange-300 focus:border-orange-300 mr-1 sm:text-sm" value="<?php echo $row['nome']; ?>" required>
-                                    <input type="text" name="cognome" id="<?php echo $row['cognome']; ?>" class="mb-1 block
+                                    focus:ring-orange-300 focus:border-orange-300 mr-1 sm:text-sm" value="<?php echo htmlspecialchars($row['nome'], ENT_QUOTES, 'UTF-8'); ?>" required>
+                                    <input type="text" name="cognome" id="<?php echo htmlspecialchars($row['cognome'], ENT_QUOTES, 'UTF-8'); ?>" class="mb-1 block
                                     w-1/6 px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
-                                    focus:ring-orange-300 focus:border-orange-300 sm:text-sm" value="<?php echo $row['cognome']; ?>" required>
-                                    <input type="date" name="data_nascita" id="<?php echo $row['data_nascita']; ?>" class="mb-1 block
+                                    focus:ring-orange-300 focus:border-orange-300 sm:text-sm" value="<?php echo htmlspecialchars($row['cognome'], ENT_QUOTES, 'UTF-8'); ?>" required>
+                                    <input type="date" name="data_nascita" id="<?php echo htmlspecialchars($row['data_nascita'], ENT_QUOTES, 'UTF-8'); ?>" class="mb-1 block
                                     w-2/6 px-3 py-2 bg-orange-100 rounded-none focus:outline-none
-                                    focus:ring-orange-300 focus:border-orange-300 sm:text-sm" value="<?php echo $row['data_nascita']; ?>">
+                                    focus:ring-orange-300 focus:border-orange-300 sm:text-sm" value="<?php echo htmlspecialchars($row['data_nascita'], ENT_QUOTES, 'UTF-8'); ?>">
                                     <select name="sesso" id="sesso" class="mb-1 block w-3/6 px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
                                         <option class="rounded-none hover:text-orange-200" value="">Inserisci il sesso</option>
                                         <?php
@@ -254,7 +259,8 @@
                                     <button type="submit" class="ml-4 bg-orange-100 border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4">🖊️</button>
                                 </form>
                                 <form action="elimina_candidato.php" method="post">
-                                    <input type="hidden" name="id_candidato" value="<?php echo $row['id_candidato']; ?>">
+<input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
+                                    <input type="hidden" name="id_candidato" value="<?php echo htmlspecialchars($row['id_candidato'], ENT_QUOTES, 'UTF-8'); ?>">
                                     <button type="submit" class="ml-4 bg-red-100 border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4">X</button>
                                 </form>
                             </div>

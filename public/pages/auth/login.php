@@ -2,10 +2,10 @@
 
     session_start();
     if(isset($_SESSION["id"])){
-        header("Location: vota.php");
+        header("Location: ../voting/vota.php");
     }
 
-    include "connection.php";
+    include "../../../includes/connection.php";
     $codice_tessera = $_POST["codice_tessera"];
     $password = $_POST["password"];
     if(isset($_POST["codice_documento"])){
@@ -45,15 +45,12 @@
         $sql = "insert into elettore (codice_tessera_elettorale, codice_carta_identita, codice_patente,data_nascita, sesso, password, salt, id_seggio) values (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
 
-        // gereazione del salt per la password
-        $salt = strval(md5(uniqid(rand(), true)));
-        $salt = substr($salt, 0, 10);
         $bind_codice_identita = $codice_identita;
         $bind_codice_patente = $codice_patente;
         $bind_data_nascita = $_POST["data_nascita"];
         $bind_sesso = $_POST["sesso"];
-        $bind_password = crypt($password, $salt);
-        $bind_salt = $salt;
+        $bind_password = password_hash($password, PASSWORD_BCRYPT);
+        $bind_salt = ""; // salt is no longer needed with password_hash
         $bind_seggio = $seggio;
 
         $stmt->bind_param("sssssssi", $bind_codice_tessera, $bind_codice_identita, $bind_codice_patente,$bind_data_nascita, $bind_sesso, $bind_password, $bind_salt, $bind_seggio);
@@ -92,22 +89,20 @@
         if($result->num_rows > 0){
             $row = $result->fetch_assoc();
 
-            echo $row["password"] . " = " . crypt($password, $row["salt"]) . "<br>";
-
-            if($row["password"] == crypt($password, $row["salt"])){
-                $_SESSION["id"] = rand(10000, 99999);
+            if(password_verify($password, $row["password"]) || $row["password"] === crypt($password, $row["salt"])){
+                $_SESSION["id"] = bin2hex(random_bytes(16));
                 $_SESSION["codice_tessera_elettorale"] = $row["codice_tessera_elettorale"];
                 $_SESSION["tipo"] = $row["tipo"];
                 header("Location: ../pages/vota.php");
             } else {
                 session_unset();
                 session_destroy();
-                header("Location: ../?error=".$row["password"] . " = " . crypt($password, $row["salt"]));
+                header("Location: ../../../public/index.php?error=1");
             }
         } else {
             session_unset();
             session_destroy();
-            header("Location: ../?error=1");
+            header("Location: ../../../public/index.php?error=1");
         }
 
     }

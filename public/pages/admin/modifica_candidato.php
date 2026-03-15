@@ -1,5 +1,15 @@
 <?php
-include "connection.php";
+include "../../../includes/connection.php";
+
+if (!isset($_SESSION["id"]) || $_SESSION["tipo"] !== "a") {
+    header("Location: ../../../public/index.php");
+    exit;
+}
+
+if (!isset($_POST["csrf_token"]) || $_POST["csrf_token"] !== $_SESSION["csrf_token"]) {
+    die("Invalid CSRF token");
+}
+
 
 $id_candidato = $_POST['id_candidato'];
 $nome = $_POST['nome'];

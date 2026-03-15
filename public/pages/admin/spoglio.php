@@ -33,7 +33,7 @@
         </header>
     </div>
     <?php
-        include "connection.php";
+        include "../../../includes/connection.php";
         $sql = "select count(*) as voti, sigla from see, partito where conteggiato = 1 and see.id_partito = partito.sigla group by id_partito";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
