@@ -1,9 +1,9 @@
 <?php
 
-    include "../../../includes/connection.php";
+    include "../../includes/connection.php";
 
     if(!isset($_SESSION["id"])){
-        header("Location: ../../../public/index.php");
+        header("Location: ../../index.php");
     }
 
     $sql = "select id_see, conteggiato, pin from see where id_elettore = ?";

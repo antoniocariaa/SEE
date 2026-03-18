@@ -5,7 +5,7 @@
         header("Location: ../voting/vota.php");
     }
 
-    include "../../../includes/connection.php";
+    include "../../includes/connection.php";
     $codice_tessera = $_POST["codice_tessera"];
     $password = $_POST["password"];
     if(isset($_POST["codice_documento"])){
@@ -93,16 +93,16 @@
                 $_SESSION["id"] = bin2hex(random_bytes(16));
                 $_SESSION["codice_tessera_elettorale"] = $row["codice_tessera_elettorale"];
                 $_SESSION["tipo"] = $row["tipo"];
-                header("Location: ../pages/vota.php");
+                header("Location: ../voting/vota.php");
             } else {
                 session_unset();
                 session_destroy();
-                header("Location: ../../../public/index.php?error=1");
+                header("Location: ../../index.php?error=1");
             }
         } else {
             session_unset();
             session_destroy();
-            header("Location: ../../../public/index.php?error=1");
+            header("Location: ../../index.php?error=1");
         }
 
     }

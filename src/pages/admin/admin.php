@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-    include "../../../includes/connection.php";
+    include "../../includes/connection.php";
     if(!isset($_SESSION["id"]) || $_SESSION["tipo"] !== "a") {
-        header("Location: ../../../public/index.php");
+        header("Location: ../../index.php");
         exit;
     }
     
@@ -39,7 +39,7 @@
 <body class="bg-orange-100 h-full w-full">
     <div class="container mx-auto h-1/6">
         <div class="mx-auto mb-2 mt-10 w-24">
-            <a href="logout.php">
+            <a href="../auth/logout.php">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Emblem_of_Italy_%28black_and_white_without_striped_background%29.svg"
                     alt="Emblem of Italy (black and white without striped background).svg" class="w-full h-auto">
             </a>
@@ -162,7 +162,7 @@
                 $testo = "<select name='partito' id='partito' class='mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm' required>";   
                 $testo = $testo . "<option class='rounded-none hover:text-orange-200' value=''>Inserisci il partito</option>";          
                 while($row = mysqli_fetch_assoc($partiti2_result)){
-                    $testo = $testo . "<option class='rounded-none hover:text-orange-200' value='" . $row['sigla'] . "'>" . $row['nome'] . "</option>";
+                    $testo = $testo . "<option class='rounded-none hover:text-orange-200' value='" . htmlspecialchars($row['sigla'], ENT_QUOTES, 'UTF-8') . "'>" . htmlspecialchars($row['nome'], ENT_QUOTES, 'UTF-8') . "</option>";
                 }
                 $testo = $testo . "</select>";
                 
@@ -200,7 +200,7 @@
                                     <label for="sesso" class="block text-sm italic font-medium text-gray-700">Sesso</label>
                                 </div>
                                 <div class="mb-4">
-                                    <?php echo htmlspecialchars($testo, ENT_QUOTES, 'UTF-8'); ?>
+                                    <?php echo $testo; ?>
                                     <label for="partito" class="block text-sm italic font-medium text-gray-700">Partito</label>
                                 </div>
 

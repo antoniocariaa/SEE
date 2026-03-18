@@ -4,7 +4,7 @@
 //controlla se la richiesta è stata fatto con xmlhttprequest
 
 if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && $_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest"){
-    include "../../../includes/connection.php";
+    include "../../includes/connection.php";
     if(!isset($_POST["candidato1"]) && isset($_POST["sigla"])){
         $sigla = $_POST["sigla"];
         $sql = "select * from candidato where id_partito = ?";
@@ -43,7 +43,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && $_SERVER["HTTP_X_REQUESTED_WITH"]
         echo json_encode(array("error" => "Richiesta non valida"));
     }
 }else{
-    header("Location: ../../../public/index.php");
+    header("Location: ../../index.php");
 }
 
 ?>

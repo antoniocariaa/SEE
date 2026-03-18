@@ -73,7 +73,7 @@
                 <select name="seggio" id="seggio" class="mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
                     <option class="rounded-none hover:text-orange-200" value="">Seleziona il tuo seggio</option>
                     <?php
-                        include "../../../includes/connection.php";
+                        include "../../includes/connection.php";
                         $sql = "SELECT * FROM seggio";
 
                         $result = $conn->query($sql);

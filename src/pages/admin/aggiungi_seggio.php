@@ -1,8 +1,8 @@
 <?php
-include "../../../includes/connection.php";
+include "../../includes/connection.php";
 
 if (!isset($_SESSION["id"]) || $_SESSION["tipo"] !== "a") {
-    header("Location: ../../../public/index.php");
+    header("Location: ../../index.php");
     exit;
 }
 

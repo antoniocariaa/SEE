@@ -8,7 +8,7 @@
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     }
 
-    require_once __DIR__ . '/config.php';
+    require __DIR__ . '/config.php';
 
     try {
         // Enforce mysqli exceptions
