@@ -33,8 +33,8 @@
         </header>
     </div>
     <?php
-        include "../../../includes/connection.php";
-        $sql = "select count(*) as voti, sigla from see, partito where conteggiato = 1 and see.id_partito = partito.sigla group by id_partito";
+        include "../../includes/connection.php";
+        $sql = "select count(*) as voti, sigla from see join partito on see.id_partito = partito.sigla where conteggiato = 1 group by id_partito";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -65,7 +65,7 @@
             array_push($dataOrario, $row["voti"]);
         }
 
-        $sql = "select count(*) as voti, nome, cognome, candidato.id_partito  from see, candidato where (see.preferenza_1 = candidato.id_candidato or see.preferenza_2 = candidato.id_candidato) AND  conteggiato = 1 group by nome, cognome";
+        $sql = "select count(*) as voti, nome, cognome, candidato.id_partito from see join candidato on (see.preferenza_1 = candidato.id_candidato or see.preferenza_2 = candidato.id_candidato) where conteggiato = 1 group by nome, cognome, candidato.id_partito";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();

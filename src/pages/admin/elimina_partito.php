@@ -16,6 +16,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Preleva i dati dal modulo
     $sigla = $_POST["sigla"];
 
+    // Elimina prima i candidati associati al partito per rispettare la chiave esterna (manca ON DELETE CASCADE)
+    $query_candidati = "DELETE FROM candidato WHERE id_partito = ?";
+    $stmt_candidati = $conn->prepare($query_candidati);
+    $stmt_candidati->bind_param("s", $sigla);
+    $stmt_candidati->execute();
+    $stmt_candidati->close();
+
     // Prepara la query SQL
     $query = "DELETE FROM partito WHERE sigla = ?";
     $stmt = $conn->prepare($query);

@@ -18,7 +18,7 @@
 
     session_start();
     if(isset($_SESSION["id"])){
-        header("Location: pages/vota.php");
+        header("Location: voting/vota.php");
     }
 
 ?>
@@ -84,7 +84,7 @@
         </form>
     </div>
 
-    <a href="pages/spoglio.php" class="block w-6/12 md:w-4/12 lg:w-2/12  mx-auto bg-orange-100 text-center border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4 mt-5">Visualizza Spoglio Schede</a>
+    <a href="pages/admin/spoglio.php" class="block w-6/12 md:w-4/12 lg:w-2/12  mx-auto bg-orange-100 text-center border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4 mt-5">Visualizza Spoglio Schede</a>
 
 
 

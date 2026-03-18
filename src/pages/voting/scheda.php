@@ -31,7 +31,7 @@ if ($result->num_rows > 0) {
     $sql = "insert into see (id_elettore, pin) values (?, ?)";
     $stmt = $conn->prepare($sql);
     $pin = rand(10000, 99999);
-    $stmt->bind_param("ii", $_SESSION["id"], $pin);
+    $stmt->bind_param("si", $_SESSION["codice_tessera_elettorale"], $pin);
     $stmt->execute();
     header("Location: vota.php");
 }

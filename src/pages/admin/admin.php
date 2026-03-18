@@ -128,6 +128,7 @@
                             <div class="flex flex-row p-4 justify-between border border-black mt-4">
                                 <form action="modifica_partito.php" method="post" class="w-full flex items-center" enctype="multipart/form-data">
 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
+<input type="hidden" name="vecchia_sigla" value="<?php echo htmlspecialchars($row['sigla'], ENT_QUOTES, 'UTF-8'); ?>">
                                     <input type="text" name="sigla" id="sigla_<?php echo htmlspecialchars($row['sigla'], ENT_QUOTES, 'UTF-8'); ?>" class="mb-1 block
                                     w-1/6 px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none
                                     focus:ring-orange-300 focus:border-orange-300 mr-1 sm:text-sm" value="<?php echo htmlspecialchars($row['sigla'], ENT_QUOTES, 'UTF-8'); ?>" required>

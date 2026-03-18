@@ -6,7 +6,7 @@
         header("Location: ../../../public/index.php");
     }
 
-    $sql = "select id_see, conteggiato, votato, pin from see, elettore where id_elettore = ?";
+    $sql = "select id_see, conteggiato, votato, pin from see join elettore on see.id_elettore = elettore.codice_tessera_elettorale where id_elettore = ?";
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $_SESSION["codice_tessera_elettorale"]);

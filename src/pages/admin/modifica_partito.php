@@ -14,6 +14,7 @@ if (!isset($_POST["csrf_token"]) || $_POST["csrf_token"] !== $_SESSION["csrf_tok
 // Verifica che il modulo sia stato inviato
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Preleva i dati dal modulo
+    $vecchia_sigla = $_POST["vecchia_sigla"];
     $sigla = $_POST["sigla"];
     $nome = $_POST["nome"];
 
@@ -27,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $conn->prepare($query);
 
         // Associa i dati del modulo alla query SQL
-        $stmt->bind_param("ss", $immagine_base64, $sigla);
+        $stmt->bind_param("ss", $immagine_base64, $vecchia_sigla);
 
         // Esegui la query SQL
         $stmt->execute();
@@ -41,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt = $conn->prepare($query);
 
     // Associa i dati del modulo alla query SQL
-    $stmt->bind_param("sss", $sigla, $nome, $sigla);
+    $stmt->bind_param("sss", $sigla, $nome, $vecchia_sigla);
 
     // Esegui la query SQL
     $stmt->execute();
