@@ -1,9 +1,9 @@
 <?php
 
-    include "connection.php";
+    include "../../includes/connection.php";
 
     if(!isset($_SESSION["id"])){
-        header("Location: ../");
+        header("Location: ../../index.php");
     }
 
     $sql = "select id_see, conteggiato, pin from see where id_elettore = ?";
@@ -25,12 +25,13 @@
 
             $conn->query("START TRANSACTION");
 
-
-
-            $sql = "update see,elettore set conteggiato = 1, votato = 1, see.id_elettore = '', data_voto = curtime() where pin =?";
+            $sql = "update see join elettore on see.id_elettore = elettore.codice_tessera_elettorale set conteggiato = 1, votato = 1, see.id_elettore = ?, data_voto = curtime() where pin =?";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('s', $_SESSION["pin"]);
+            $conn->query("SET FOREIGN_KEY_CHECKS=0;");
+            $empty_str = '';
+            $stmt->bind_param('ss', $empty_str, $_SESSION["pin"]);
             $stmt->execute();
+            $conn->query("SET FOREIGN_KEY_CHECKS=1;");
 
             if (isset($_POST["partito"]) && !empty($_POST["partito"])) {
                 $stmt = $conn->prepare("update see set id_partito = ? where pin =? ");
@@ -47,17 +48,15 @@
                 $stmt->bind_param('ss',$_POST["candidato2"], $_SESSION["pin"]);
                 $stmt->execute();
             }
-            $params[] = $_SESSION["pin"];
-            $stmt->execute();
-            $conn->prepare("commit")->execute();
+            $conn->query("commit");
             $_SESSION["pin"] = -1;
             echo "ok";
         }
     }else{
         $sql = "insert into see (id_elettore, pin) values (?, ?)";
         $stmt = $conn->prepare($sql);
-        $pin = rand(10000, 99999);
-        $stmt->bind_param("ii", $_SESSION["id"], $pin);
+        $pin = random_int(100000, 999999);
+        $stmt->bind_param("ss", $_SESSION["codice_tessera_elettorale"], $pin);
         $stmt->execute();
         $_SESSION["pin"] = $pin;
         header("Location: scheda.php");

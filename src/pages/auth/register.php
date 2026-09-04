@@ -18,7 +18,7 @@
 
     session_start();
     if(isset($_SESSION["id"])){
-        header("Location: vota.php");
+        header("Location: ../voting/vota.php");
     }
 
 ?>
@@ -40,6 +40,7 @@
 
     <div class="container mx-auto p-5 mt-20 w-5/6 md:w-4/6 lg:w-3/6 mb-5 border border-black ">
         <form action="login.php" method="post">
+<input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
             <div class="mb-4">
                 <input type="text" name="codice_tessera" id="codice_tessera" class="mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
                 <label for="codice_tessera" class="block italic text-sm font-medium text-gray-700">Tessera Elettorale</label>
@@ -72,7 +73,7 @@
                 <select name="seggio" id="seggio" class="mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
                     <option class="rounded-none hover:text-orange-200" value="">Seleziona il tuo seggio</option>
                     <?php
-                        include "connection.php";
+                        include "../../includes/connection.php";
                         $sql = "SELECT * FROM seggio";
 
                         $result = $conn->query($sql);

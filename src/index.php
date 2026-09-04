@@ -18,7 +18,7 @@
 
     session_start();
     if(isset($_SESSION["id"])){
-        header("Location: pages/vota.php");
+        header("Location: pages/voting/vota.php");
     }
 
 ?>
@@ -52,7 +52,7 @@
     <!-- FORM login, campi necessari: codice tessera elettorale  Opzione select con tipo di documento (Carta identità / patente) e un campo per il codice del documento -->
 
     <div class="container mx-auto p-5 mt-20 w-5/6 md:w-4/6 lg:w-3/6 mb-5 border border-black ">
-        <form action="pages/login.php" method="post">
+        <form action="pages/auth/login.php" method="post">
             <div class="mb-4">
                 <input type="text" name="codice_tessera" id="codice_tessera" class="mb-1 block w-full px-3 py-2 bg-orange-100 border-b border-black rounded-none focus:outline-none focus:ring-orange-300 focus:border-orange-300 sm:text-sm" required>
                 <label for="codice_tessera" class="block italic text-sm font-medium text-gray-700">Tessera Elettorale</label>
@@ -77,14 +77,14 @@
                     <button type="submit" class="w-full bg-orange-100 border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4">Accedi</button>
                 </div>
                 <div class="mb-4 w-auto pl-10 pr-10">
-                    <button onclick="location.href='pages/register.php'" class="w-full bg-orange-100 border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4">Registrati</button>
+                    <button onclick="location.href='pages/auth/register.php'" class="w-full bg-orange-100 border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4">Registrati</button>
                 </div>
             </div>
             
         </form>
     </div>
 
-    <a href="pages/spoglio.php" class="block w-6/12 md:w-4/12 lg:w-2/12  mx-auto bg-orange-100 text-center border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4 mt-5">Visualizza Spoglio Schede</a>
+    <a href="pages/admin/spoglio.php" class="block w-6/12 md:w-4/12 lg:w-2/12  mx-auto bg-orange-100 text-center border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4 mt-5">Visualizza Spoglio Schede</a>
 
 
 

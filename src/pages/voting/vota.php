@@ -1,12 +1,12 @@
 <?php    
 
-    include "connection.php";
+    include "../../includes/connection.php";
 
     if(!isset($_SESSION["id"])){
-        header("Location: ../");
+        header("Location: ../../index.php");
     }
 
-    $sql = "select id_see, conteggiato, votato, pin from see, elettore where id_elettore = ?";
+    $sql = "select id_see, conteggiato, votato, pin from see join elettore on see.id_elettore = elettore.codice_tessera_elettorale where id_elettore = ?";
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $_SESSION["codice_tessera_elettorale"]);
@@ -37,7 +37,7 @@
             if($votato == 0){
                 $sql = "insert into see (id_elettore, pin) values (?, ?)";
                 $stmt = $conn->prepare($sql);
-                $pin = rand(10000, 99999);
+                $pin = random_int(100000, 999999);
                 $stmt->bind_param("si", $_SESSION["codice_tessera_elettorale"], $pin);
                 $stmt->execute();
                 $_SESSION["pin"] = $pin;
@@ -74,7 +74,7 @@
 <body class="bg-orange-100 h-full">
     <div class="container mx-auto">
         <div class="mx-auto mb-2 mt-10 w-24">
-            <a href="logout.php">
+            <a href="../auth/logout.php">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Emblem_of_Italy_%28black_and_white_without_striped_background%29.svg" alt="Emblem of Italy (black and white without striped background).svg" class="w-full h-auto">
             </a>
         </div>
@@ -89,7 +89,7 @@
         if($_SESSION["pin"] == -1){
             echo "<p class=\"font-bold text-2xl\">Hai già compilato la scheda elettorale per questa votazione</p>";
             echo "<p class=\"text-md pt-3 font-serif\">Non è possibile votare più di una volta</p>";
-            echo "<a href=\"spoglio.php\" class=\"block w-1/3 mx-auto bg-orange-100 border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4 mt-5\">Spoglio</a>";
+            echo "<a href=\"../admin/spoglio.php\" class=\"block w-1/3 mx-auto bg-orange-100 border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4 mt-5\">Spoglio</a>";
         } else {
             echo "<p class=\" text-4xl\">Il tuo pin è: <span class=\"font-bold\" id=\"pinspan\">*******</span></p>";
             echo "<p class=\"text-md pt-3 font-serif\">Trascina il cursore per mostrare</p>";
@@ -108,13 +108,13 @@
     </div>
     <?php
         if($_SESSION["tipo"] == "a"){
-            echo "<a href=\"admin.php\" class=\"block w-1 w-6/12 md:w-4/12 lg:w-2/12 mx-auto text-center bg-orange-100 border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4 mt-5\">Amministrazione</a>";
+            echo "<a href=\"../admin/admin.php\" class=\"block w-1 w-6/12 md:w-4/12 lg:w-2/12 mx-auto text-center bg-orange-100 border-b-2 border-transparent hover:border-black text-black font-bold py-2 px-4 mt-5\">Amministrazione</a>";
         }
     ?>
 
     <script>
 
-        var pin = <?php echo $_SESSION["pin"]; ?>;
+        var pin = <?php echo htmlspecialchars($_SESSION["pin"], ENT_QUOTES, 'UTF-8'); ?>;
         $(document).ready(function(){
 
             //quando il mouse va in hover sul pin lo mostra altrimenti lo nasconde

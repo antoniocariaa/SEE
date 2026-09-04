@@ -22,7 +22,7 @@
 <body class="bg-orange-100 h-full">
     <div class="container mx-auto h-1/6">
         <div class="mx-auto mb-2 mt-10 w-24">
-            <a href="logout.php">
+            <a href="../auth/logout.php">
             <img src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Emblem_of_Italy_%28black_and_white_without_striped_background%29.svg"
                 alt="Emblem of Italy (black and white without striped background).svg" class="w-full h-auto">
             </a>
@@ -33,8 +33,8 @@
         </header>
     </div>
     <?php
-        include "connection.php";
-        $sql = "select count(*) as voti, sigla from see, partito where conteggiato = 1 and see.id_partito = partito.sigla group by id_partito";
+        include "../../includes/connection.php";
+        $sql = "select count(*) as voti, sigla from see join partito on see.id_partito = partito.sigla where conteggiato = 1 group by id_partito";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -54,7 +54,7 @@
 
 
 
-        $sql = "select count(*) as voti, hour(data_voto) as ora from see where conteggiato = 1 group by hour(data_voto)";
+        $sql = "select count(*) as voti, hour(data_voto) as ora from see where conteggiato = 1 group by hour(data_voto) order by hour(data_voto) asc";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -65,7 +65,7 @@
             array_push($dataOrario, $row["voti"]);
         }
 
-        $sql = "select count(*) as voti, nome, cognome, candidato.id_partito  from see, candidato where (see.preferenza_1 = candidato.id_candidato or see.preferenza_2 = candidato.id_candidato) AND  conteggiato = 1 group by nome, cognome";
+        $sql = "select count(*) as voti, nome, cognome, candidato.id_partito from see join candidato on (see.preferenza_1 = candidato.id_candidato or see.preferenza_2 = candidato.id_candidato) where conteggiato = 1 group by nome, cognome, candidato.id_partito";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -77,7 +77,7 @@
         }
 
         //seleziona i votanti per fascia d'età calcola l'eta da data di nascita
-        $sql = "select count(*) as voti, year(data_nascita) as eta from elettore where votato = 1 group by year(data_nascita)";
+        $sql = "select count(*) as voti, year(data_nascita) as eta from elettore where votato = 1 group by year(data_nascita) order by year(data_nascita) asc";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
